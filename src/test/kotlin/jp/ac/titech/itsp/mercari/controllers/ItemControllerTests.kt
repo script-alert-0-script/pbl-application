@@ -35,7 +35,7 @@ class ItemControllerTests {
             "/api/item",
             HttpEntity("""name=hoge&user=poyo""", headers)
         )
-        println(actual.statusCode)
+        assertEquals(HttpStatus.OK, actual.statusCode)
     }
 
     @Test
