@@ -56,4 +56,11 @@ class ItemControllerTests {
         assertEquals(HttpStatus.OK, actual.statusCode)
     }
 
+    @Test
+    fun search() {
+        val actual: ResponseEntity<List<Item>> = testRestTemplate.getForEntity("/api/item/search?name=am")
+        assertEquals(HttpStatus.OK, actual.statusCode)
+        assertEquals(5, actual.body?.size)
+    }
+
 }
