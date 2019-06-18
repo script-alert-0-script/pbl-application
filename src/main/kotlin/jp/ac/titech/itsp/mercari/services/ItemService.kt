@@ -22,4 +22,6 @@ class ItemService {
 
     fun getAll(): List<Item> = itemRepository.findAll()
 
+    fun search(name: String): List<Item> = itemRepository.findByNameContaining(name)
+
 }

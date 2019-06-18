@@ -32,4 +32,7 @@ class ItemController {
     @GetMapping
     fun getAll() = ResponseEntity.ok(itemService.getAll())
 
+    @GetMapping("/search")
+    fun search(@RequestParam name: String) = ResponseEntity.ok(itemService.search(name))
+
 }
