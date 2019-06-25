@@ -17,6 +17,8 @@ repositories {
     mavenCentral()
 }
 
+val swaggerVersion = "2.9.2"
+
 dependencies {
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))
@@ -28,6 +30,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(module = "junit")
     }
+    // Swagger
+    implementation("io.springfox:springfox-swagger2:$swaggerVersion")
+    implementation("io.springfox:springfox-swagger-ui:$swaggerVersion")
     // Other
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     runtimeOnly("com.h2database:h2")
