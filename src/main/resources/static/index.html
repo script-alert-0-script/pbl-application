@@ -1,18 +1,31 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="ja" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>index.html</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Title</title>
 </head>
 <body>
-    <form method="POST" action="/api/item" enctype="multipart/form-data" />
-        <div>
-            <input type="text" name="name" value="foo" size="50" />
-            <input type="hidden" name="user" value="bar" />
-            <input type="submit" value="出品" />
-        </div>
+
+<div id="app">
+
+
+    <ul>
+        <li v-for="item in items">
+            {{ item.id }} - {{ item.name }} - {{ item.price }}
+
+        </li>
+    </ul>
+
+    <form class="add-form" v-on:submit.prevent="doAdd">
+        商品名 <input type="text" ref="shouhinmei">
+        値　段 <input type="text" ref="nedan">
+        <button type="submit">出品</button>
     </form>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="./main.js"></script>
 
 </body>
 </html>
