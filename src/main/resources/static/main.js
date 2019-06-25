@@ -1,12 +1,26 @@
 new Vue({
     el: '#app',
     data: {
-        items: []
+        items: [],
+        param: ''
     },
     async created() {
         // インスタンス作成時に自動的にローカルストレージをfetchする
-        console.log(this.item);
         this.items = await getAllItems();
-        console.log(this.item);
+
+        this.debouncedGetItemSearch = _.debounce(this.getItemSearch, 500);
     },
-})
+    watch: {
+        param: function () {
+            this.debouncedGetItemSearch();
+        }
+    },
+
+    methods: {
+        getItemSearch: async function () {
+            if (this.param == '') return;
+            this.items = await getItemSearch(this.param);
+        }
+    }
+});
+

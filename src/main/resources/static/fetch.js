@@ -9,6 +9,6 @@ async function getItem(id) {
 async function getItemSearch(q) {
     let param = new URLSearchParams();
     param.set('name', q);
-    return (await fetch('api/item/search' + param.toString())).json();
+    return (await fetch('api/item/search?' + param.toString())).json();
 }
 

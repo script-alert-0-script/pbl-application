@@ -7,12 +7,10 @@
 <body>
 
 <div id="app">
-
-
+    <input v-model="param">
     <ul>
         <li v-for="item in items">
             {{ item.id }} - {{ item.name }} - {{ item.price }}
-
         </li>
     </ul>
 
@@ -20,8 +18,9 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash"></script>
+
 <script src="./fetch.js"></script>
 <script src="./main.js"></script>
-
 </body>
 </html>
