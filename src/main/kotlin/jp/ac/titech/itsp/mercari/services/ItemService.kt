@@ -2,6 +2,7 @@ package jp.ac.titech.itsp.mercari.services
 
 import javassist.NotFoundException
 import jp.ac.titech.itsp.mercari.models.Item
+import jp.ac.titech.itsp.mercari.models.User
 import jp.ac.titech.itsp.mercari.repositories.ItemRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -12,7 +13,7 @@ class ItemService {
     @Autowired
     lateinit var itemRepository: ItemRepository
 
-    fun create(name: String, user: String) = itemRepository.save(Item(name, user))
+    fun create(name: String, owner: User) = itemRepository.save(Item(name, owner))
 
     fun get(id: Long): Item {
         val item = itemRepository.findById(id)

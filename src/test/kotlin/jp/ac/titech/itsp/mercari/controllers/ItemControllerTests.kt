@@ -1,66 +1,84 @@
 package jp.ac.titech.itsp.mercari.controllers
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import jp.ac.titech.itsp.mercari.models.Item
+import jp.ac.titech.itsp.mercari.models.User
 import jp.ac.titech.itsp.mercari.repositories.ItemRepository
+import jp.ac.titech.itsp.mercari.repositories.UserRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.boot.test.web.client.getForEntity
-import org.springframework.boot.test.web.client.postForEntity
-import org.springframework.http.*
+import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 class ItemControllerTests {
 
     @Autowired
     lateinit var itemRepository: ItemRepository
     @Autowired
-    lateinit var testRestTemplate: TestRestTemplate
+    lateinit var userRepository: UserRepository
+    @Autowired
+    lateinit var mvc: MockMvc
 
     @BeforeEach
     fun before() {
-        itemRepository.saveAll((1..5L).map { Item("name$it", "user$it", it) })
+        val user = userRepository.save(User("user"))
+        itemRepository.saveAll((1..5L).map { Item("name$it", user, it) })
     }
 
     @Test
-    fun register() {
-        val headers = HttpHeaders().apply { contentType = MediaType.APPLICATION_FORM_URLENCODED }
-        val actual = testRestTemplate.postForEntity<String>(
-            "/api/item",
-            HttpEntity("""name=hoge&user=poyo""", headers)
+    @WithMockUser
+    fun registerItem() {
+        mvc.perform(
+            post("/api/item")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .content("name=hoge")
         )
-        assertEquals(HttpStatus.OK, actual.statusCode)
+            .andExpect(status().isOk)
     }
 
     @Test
-    fun get() {
-        val actual: ResponseEntity<Item> = testRestTemplate.getForEntity("/api/item/1")
-        assertEquals(HttpStatus.OK, actual.statusCode)
+    fun getItem() {
+        val result = mvc.perform(get("/api/item/1"))
+            .andExpect(status().isOk)
+            .andReturn()
+        val actual: Item = jacksonObjectMapper().readValue(result.response.contentAsString)
     }
 
     @Test
-    fun getNotFound() {
-        val actual: ResponseEntity<Item> = testRestTemplate.getForEntity("/api/item/114514")
-        assertEquals(HttpStatus.NOT_FOUND, actual.statusCode)
+    fun getItemNotFound() {
+        mvc.perform(get("/api/item/114514"))
+            .andExpect(status().isNotFound)
     }
 
     @Test
-    fun getAll() {
-        val actual: ResponseEntity<List<Item>> = testRestTemplate.getForEntity("/api/item")
-        assertEquals(HttpStatus.OK, actual.statusCode)
+    fun getItems() {
+        val result = mvc.perform(get("/api/item"))
+            .andExpect(status().isOk)
+            .andReturn()
+        val actual: List<Item> = jacksonObjectMapper().readValue(result.response.contentAsString)
     }
 
     @Test
-    fun search() {
-        val actual: ResponseEntity<List<Item>> = testRestTemplate.getForEntity("/api/item/search?name=am")
-        assertEquals(HttpStatus.OK, actual.statusCode)
-        assertEquals(5, actual.body?.size)
+    fun searchItem() {
+        val result = mvc.perform(get("/api/item/search?name=am"))
+            .andExpect(status().isOk)
+            .andReturn()
+        val actual: List<Item> = jacksonObjectMapper().readValue(result.response.contentAsString)
+        assertEquals(5, actual.size)
     }
 
 }
