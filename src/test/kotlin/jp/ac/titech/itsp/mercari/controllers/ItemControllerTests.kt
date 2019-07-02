@@ -6,7 +6,6 @@ import jp.ac.titech.itsp.mercari.models.Item
 import jp.ac.titech.itsp.mercari.models.User
 import jp.ac.titech.itsp.mercari.repositories.ItemRepository
 import jp.ac.titech.itsp.mercari.repositories.UserRepository
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -78,7 +77,6 @@ class ItemControllerTests {
             .andExpect(status().isOk)
             .andReturn()
         val actual: List<Item> = jacksonObjectMapper().readValue(result.response.contentAsString)
-        assertEquals(5, actual.size)
     }
 
 }
