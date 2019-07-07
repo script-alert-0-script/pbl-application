@@ -25,7 +25,7 @@ class ItemControllerTests {
 
     @BeforeEach
     fun before() {
-        itemRepository.saveAll((1..5L).map { Item("name$it", "user$it", it) })
+        itemRepository.saveAll((1..5L).map { Item("name$it", "user$it", mutableListOf(), it) })
     }
 
     @Test

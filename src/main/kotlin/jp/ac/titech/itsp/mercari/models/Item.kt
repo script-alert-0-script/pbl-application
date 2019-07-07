@@ -11,6 +11,10 @@ data class Item(
     @Column(name = "user", nullable = false)
     var user: String = "",
 
+    @Column(name = "chats", nullable = false)
+    @OneToMany
+    var publicChats: MutableList<Chat> = mutableListOf(),
+
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
