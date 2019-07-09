@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import io.swagger.annotations.ApiOperation
+import jp.ac.titech.itsp.mercari.models.User
+import jp.ac.titech.itsp.mercari.services.UserService
 
 
 @RestController
@@ -21,10 +23,13 @@ class ItemController {
     @Autowired
     lateinit var itemService: ItemService
 
+    @Autowired
+    lateinit var userService: UserService
+
     @ApiOperation("Register a item")
     @PostMapping
-    fun register(@RequestParam name: String, @RequestParam user: String): ResponseEntity<Long> {
-        val item = itemService.create(name, user)
+    fun register(@RequestParam name: String): ResponseEntity<Long> {
+        val item = itemService.create(name, userService.me())
         return ResponseEntity.ok(item.id)
     }
 
