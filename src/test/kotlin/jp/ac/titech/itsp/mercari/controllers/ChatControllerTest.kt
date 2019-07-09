@@ -1,7 +1,9 @@
 package jp.ac.titech.itsp.mercari.controllers
 
 import jp.ac.titech.itsp.mercari.models.Item
+import jp.ac.titech.itsp.mercari.models.User
 import jp.ac.titech.itsp.mercari.repositories.ItemRepository
+import jp.ac.titech.itsp.mercari.repositories.UserRepository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -21,11 +23,15 @@ class ChatControllerTests {
     lateinit var itemRepository: ItemRepository
 
     @Autowired
+    lateinit var userRepository: UserRepository
+
+    @Autowired
     lateinit var testRestTemplate: TestRestTemplate
 
     @BeforeEach
     fun before() {
-        itemRepository.saveAll((1..5L).map { Item("name$it", "user$it", mutableListOf(), it) })
+        val user = userRepository.save(User("default-user"))
+        itemRepository.saveAll((1..5L).map { Item("name$it", user, it) })
     }
 
     @Test

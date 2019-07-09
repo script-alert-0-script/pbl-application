@@ -10,13 +10,13 @@ data class Chat(
     var message: String = "",
 
     @Column(name = "user", nullable = false)
-    var user: String = "",
+    var user: User,
 
     @Column(name = "date", nullable = false)
     var date: Date = Date(),
 
     @ManyToOne
-    var item: Item,
+    var chatRoom: ChatRoom,
 
     @Id
     @GeneratedValue

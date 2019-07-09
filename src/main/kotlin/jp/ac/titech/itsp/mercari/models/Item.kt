@@ -1,5 +1,6 @@
 package jp.ac.titech.itsp.mercari.models
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 
 @Entity
@@ -12,12 +13,13 @@ data class Item(
     @JoinColumn(name = "owner", nullable = false)
     var owner: User = User(),
 
-    @Column(name = "chats", nullable = false)
-    @OneToMany
-    var publicChats: MutableList<Chat> = mutableListOf(),
-
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     val id: Long = 0L
-)
+) {
+    @JsonIgnore
+    @OneToOne
+    @Column(name = "public_room", nullable = false)
+    var publicRoom: ChatRoom = ChatRoom(this)
+}

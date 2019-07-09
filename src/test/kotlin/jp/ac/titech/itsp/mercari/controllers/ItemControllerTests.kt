@@ -2,6 +2,7 @@ package jp.ac.titech.itsp.mercari.controllers
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import jp.ac.titech.itsp.mercari.models.ChatRoom
 import jp.ac.titech.itsp.mercari.models.Item
 import jp.ac.titech.itsp.mercari.models.User
 import jp.ac.titech.itsp.mercari.repositories.ItemRepository
@@ -35,7 +36,7 @@ class ItemControllerTests {
     @BeforeEach
     fun before() {
         val user = userRepository.save(User("user"))
-        itemRepository.saveAll((1..5L).map { Item("name$it", user, mutableListOf(), it) })
+        itemRepository.saveAll((1..5L).map { Item("name$it", user,  it) })
     }
 
     @Test

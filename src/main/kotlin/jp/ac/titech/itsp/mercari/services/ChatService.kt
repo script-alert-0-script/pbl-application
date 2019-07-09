@@ -13,10 +13,11 @@ class ChatService {
 
     fun create(message: String, user: User, itemId: Long): Chat{
         var item = itemService.get(itemId)
-        val chat = Chat(message, user, Date(), item)
-        item.publicChats.add(chat)
+        var room = item.publicRoom
+        val chat = Chat(message, user, Date(), room)
+        room.add(chat)
         return chat
     }
 
-    fun getAll(id: Long): List<Chat> = itemService.get(id).publicChats
+    fun getAll(id: Long): List<Chat> = itemService.get(id).publicRoom.chats
 }
