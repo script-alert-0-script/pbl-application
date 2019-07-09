@@ -1,4 +1,4 @@
-package jp.ac.titech.itsp.mercari.controllers.item
+package jp.ac.titech.itsp.mercari.controllers.user
 
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
@@ -30,6 +30,17 @@ class UserController {
     fun get(@PathVariable("id") id: String): ResponseEntity<User> {
         return try {
             ResponseEntity.ok(userService.get(id))
+        } catch (e: NotFoundException) {
+            ResponseEntity.notFound().build()
+        }
+    }
+
+    @ApiOperation("Get me")
+    @ApiResponses(value = [ApiResponse(code = 404, message = "User not found")])
+    @GetMapping("/me")
+    fun me(): ResponseEntity<User> {
+        return try {
+            ResponseEntity.ok(userService.me())
         } catch (e: NotFoundException) {
             ResponseEntity.notFound().build()
         }
