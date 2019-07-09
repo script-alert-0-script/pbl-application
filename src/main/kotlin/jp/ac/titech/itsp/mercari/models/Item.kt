@@ -8,8 +8,9 @@ data class Item(
     @Column(name = "name", nullable = false)
     var name: String = "",
 
-    @Column(name = "user", nullable = false)
-    var user: String = "",
+    @ManyToOne
+    @JoinColumn(name = "owner", nullable = false)
+    var owner: User = User(),
 
     @Column(name = "chats", nullable = false)
     @OneToMany
