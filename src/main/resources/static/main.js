@@ -28,43 +28,78 @@ const Index = {
     }
 };
 
-const Comment = {
+const ItemInfo = {
     template: `
-<div id="comment">
-    <p>{{ userName }} : {{ content }}</p>
+<div id='item-info'>
+    <p>出品物のid,name : {{ item.id }} - {{item.name}} </p>
 </div>
 `,
+    data: () => ({item: {}}),
     props: {
-        userName: String,
-        content: String,
+        id: Number
+    },
+    async created() {
+        this.item = await getItem(this.id);
+    }
+};
+
+const UserInfo = {
+    template: `
+<div id='user-info'>
+    <p>User page</p>
+    <!--p>userのid,name : {{ user.id }} - {{user.name}} </p -->
+</div>
+`,
+    data: () => ({user: {}}),
+    props: {
+        id: Number
+    },
+    async created() {
+        //this.user = await getUser(this.id);
     }
 };
 
 const Chat = {
     template: `
 <div id="chat">
+    <p>{{ userName }} : {{ message }}</p>
+</div>
+`,
+    props: {
+        'user-name': String,
+        'message': String,
+    }
+};
+
+const SendMessage = {
+    template: `
+<div id="send-message">
     <input type='text' v-model='message'> 
-    <button v-on:click='postMessage'>送信</button> 
+    <button v-on:click='sendMessage'>送信</button> 
 </div>
 `,
     props: {},
     data: () => ({message: ''}),
     methods: {
-        postMessage: function () {
-            this.$emit('post-message', this.message)
+        sendMessage: function () {
+            this.$emit('send-message', this.message);
         }
     }
 };
 
 const ItemPage = {
     components: {
-        comment: Comment,
-        chat: Chat,
+        'item-info': ItemInfo,
+        'user-info': UserInfo,
+        'chat': Chat,
+        'send-message': SendMessage,
     },
     template: `
-<div id="itemPage">
-    <comment v-for="log in logs" :user-name="log.name" :content="log.message"></comment>
-    <chat @post-message="inText"></chat>
+<div id="item-page">
+    <item-info :id="$route.params.id"></item-info>
+    <user-info :id="42"></user-info>
+    <chat v-for="log in logs" :user-name="log.name" :message="log.message"></chat>
+    <send-message @send-message="pushLog"></send-message>
 </div>
 `,
     data: () => ({
@@ -74,14 +109,13 @@ const ItemPage = {
         ]
     }),
     methods: {
-        inText: function (message) {
+        pushLog: function (message) {
             this.logs.push({
-                name: 'string literal',
+                name: 'my name',
                 message: message
             })
         }
     }
-
 };
 
 const routes = [
