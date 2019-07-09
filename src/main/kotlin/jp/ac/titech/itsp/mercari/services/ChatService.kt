@@ -1,6 +1,7 @@
 package jp.ac.titech.itsp.mercari.services
 
 import jp.ac.titech.itsp.mercari.models.Chat
+import jp.ac.titech.itsp.mercari.models.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
@@ -10,7 +11,7 @@ class ChatService {
     @Autowired
     lateinit var itemService: ItemService
 
-    fun create(message: String, user: String, itemId: Long): Chat{
+    fun create(message: String, user: User, itemId: Long): Chat{
         var item = itemService.get(itemId)
         val chat = Chat(message, user, Date(), item)
         item.publicChats.add(chat)
