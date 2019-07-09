@@ -12,3 +12,6 @@ async function getItemSearch(q) {
     return (await fetch('api/item/search?' + param.toString())).json();
 }
 
+async function getUserInfo(id) {
+    return (await fetch(`api/user/${id}`)).json();
+}
