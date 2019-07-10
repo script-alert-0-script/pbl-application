@@ -4,7 +4,7 @@ const Index = {
     <input v-model="param">
     <ul>
         <li v-for="item in items">
-            <router-link v-bind:to="\`/item/\${item.id}\`">{{ item.id }} - {{ item.name }}</router-link>
+            <router-link v-bind:to="\`/item/\${item.id}\`">id : {{ item.id }} - name : {{ item.name }} by {{item.owner.id}}</router-link>
         </li>
     </ul>
 </div>
@@ -34,28 +34,27 @@ const ItemInfo = {
     <p>出品物のid,name : {{ item.id }} - {{item.name}} </p>
 </div>
 `,
-    data: () => ({item: {}}),
     props: {
-        id: Number
-    },
-    async created() {
-        this.item = await getItem(this.id);
+        item: {
+            type: Object,
+            default: () => ({id: null, name: null}),
+            required: true
+        }
     }
 };
 
 const UserInfo = {
     template: `
 <div id='user-info'>
-    <p>User page</p>
-    <!--p>userのid,name : {{ user.id }} - {{user.name}} </p -->
+    <p>ownerのid : {{ owner.id }}</p>
 </div>
 `,
-    data: () => ({user: {}}),
     props: {
-        id: Number
-    },
-    async created() {
-        //this.user = await getUser(this.id);
+        owner: {
+            type: Object,
+            default: () => ({id: null}),
+            required: true
+        }
     }
 };
 
@@ -66,8 +65,8 @@ const Chat = {
 </div>
 `,
     props: {
-        'user-name': String,
-        'message': String,
+        'user-name': {type: String, required: true},
+        'message': {type: String, required: true},
     }
 };
 
@@ -96,8 +95,9 @@ const ItemPage = {
     },
     template: `
 <div id="item-page">
-    <item-info :id="$route.params.id"></item-info>
-    <user-info :id="42"></user-info>
+    <item-info :item="item"></item-info>
+    <user-info :owner="item.owner"></user-info>
+    <!-- TODO: manage chats -->
     <chat v-for="log in logs" :user-name="log.name" :message="log.message"></chat>
     <send-message @send-message="pushLog"></send-message>
 </div>
@@ -106,8 +106,12 @@ const ItemPage = {
         logs: [
             {name: 'hoge', message: 'huga'},
             {name: 'foo', message: 'bar'}
-        ]
+        ],
+        item: {}
     }),
+    async created() {
+        this.item = await getItem(this.$route.params.id);
+    },
     methods: {
         pushLog: function (message) {
             this.logs.push({
