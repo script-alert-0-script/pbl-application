@@ -1,15 +1,19 @@
+async function fetchJSON(uri) {
+    return (await fetch(uri)).json();
+}
+
 async function getAllItems() {
-    return (await fetch('api/item')).json();
+    return await fetchJSON('api/item');
 }
 
 async function getItem(id) {
-    return (await fetch(`api/item/${id}`)).json();
+    return await fetchJSON(`api/item/${id}`);
 }
 
 async function getItemSearch(q) {
     let param = new URLSearchParams();
     param.set('name', q);
-    return (await fetch('api/item/search?' + param.toString())).json();
+    return await fetch('api/item/search?' + param.toString());
 }
 
 async function getUser(id) {
