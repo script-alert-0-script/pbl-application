@@ -31,15 +31,15 @@ class ChatControllerTests {
     @BeforeEach
     fun before() {
         val user = userRepository.save(User("default-user"))
-        itemRepository.saveAll((1..5L).map { Item("name$it", user, it) })
+        itemRepository.saveAll((1..5L).map { Item(user, "name$it", it) })
     }
 
     @Test
     fun send() {
         val headers = HttpHeaders().apply { contentType = MediaType.APPLICATION_FORM_URLENCODED }
         val actual = testRestTemplate.postForEntity<String>(
-                "/api/chat/0",
-                HttpEntity("""message=hoge&user=poyo""", headers)
+            "/api/chat/0",
+            HttpEntity("""message=hoge&user=poyo""", headers)
         )
         Assertions.assertEquals(HttpStatus.OK, actual.statusCode)
     }

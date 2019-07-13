@@ -6,17 +6,19 @@ import javax.persistence.*
 @Entity
 @Table(name = "chat")
 data class Chat(
+    @ManyToOne
+    @JoinColumn(name = "chat_room", nullable = false)
+    val chatRoom: ChatRoom,
+
+    @ManyToOne
+    @JoinColumn(name = "user", nullable = false)
+    val user: User,
+
     @Column(name = "message", nullable = false)
     var message: String = "",
 
-    @Column(name = "user", nullable = false)
-    var user: User,
-
     @Column(name = "date", nullable = false)
     var date: Date = Date(),
-
-    @ManyToOne
-    var chatRoom: ChatRoom,
 
     @Id
     @GeneratedValue

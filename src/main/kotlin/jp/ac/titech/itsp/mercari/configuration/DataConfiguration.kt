@@ -1,7 +1,9 @@
 package jp.ac.titech.itsp.mercari.configuration
 
+import jp.ac.titech.itsp.mercari.models.Chat
 import jp.ac.titech.itsp.mercari.models.Item
 import jp.ac.titech.itsp.mercari.models.User
+import jp.ac.titech.itsp.mercari.repositories.ChatRepository
 import jp.ac.titech.itsp.mercari.repositories.ItemRepository
 import jp.ac.titech.itsp.mercari.repositories.UserRepository
 import org.slf4j.LoggerFactory
@@ -21,6 +23,8 @@ class DataConfiguration {
     lateinit var userRepository: UserRepository
     @Autowired
     lateinit var itemRepository: ItemRepository
+    @Autowired
+    lateinit var chatRepository: ChatRepository
 
     // TODO
     @Profile("dev")
@@ -31,7 +35,8 @@ class DataConfiguration {
         }
         repeat(10) {
             userRepository.save(User("user$it", passwordEncoder.encode("pass"))).run {
-                itemRepository.save(Item("item-name$it", this))
+                val item = itemRepository.save(Item(this, "item-name$it"))
+                chatRepository.save(Chat(item.publicRoom, this, "message"))
                 logger.debug("User saved $id:$password")
             }
         }

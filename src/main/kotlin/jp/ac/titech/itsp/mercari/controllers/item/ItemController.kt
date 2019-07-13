@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE
 import org.springframework.web.bind.annotation.GetMapping
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import io.swagger.annotations.ApiOperation
-import jp.ac.titech.itsp.mercari.models.User
 import jp.ac.titech.itsp.mercari.services.UserService
 
 
@@ -29,7 +27,7 @@ class ItemController {
     @ApiOperation("Register a item")
     @PostMapping
     fun register(@RequestParam name: String): ResponseEntity<Long> {
-        val item = itemService.create(name, userService.me())
+        val item = itemService.create(userService.me(), name)
         return ResponseEntity.ok(item.id)
     }
 

@@ -28,7 +28,7 @@ class ChatController {
     fun send(@PathVariable("itemId") itemId: Long, @RequestParam message: String): ResponseEntity<Long> {
         val user = userService.me()
         return try {
-            val chat = chatService.create(message, user, itemId)
+            val chat = chatService.createByItemId(itemId, user, message)
             ResponseEntity.ok(chat.id)
         } catch (e: NotFoundException) {
             ResponseEntity.notFound().build()
@@ -37,11 +37,12 @@ class ChatController {
 
     @ApiOperation("Get all public chat message for itemId")
     @GetMapping("/{itemId}")
-    fun getAll(@PathVariable("itemId") itemId: Long): ResponseEntity<List<Chat>>{
+    fun getAll(@PathVariable("itemId") itemId: Long): ResponseEntity<List<Chat>> {
         return try {
-            ResponseEntity.ok(chatService.getAll(itemId))
+            ResponseEntity.ok(chatService.getAllByItemId(itemId))
         } catch (e: NotFoundException) {
             ResponseEntity.notFound().build()
         }
     }
+
 }

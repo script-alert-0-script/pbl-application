@@ -4,19 +4,16 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "chat_room")
-data class ChatRoom (
+data class ChatRoom(
     @OneToOne
-    val item: Item
-) {
-    @OneToMany
-    var chats: MutableList<Chat> = mutableListOf()
+    val item: Item,
 
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     val id: Long = 0L
-
-    fun add(chat: Chat) {
-       chats.add(chat)
-    }
+) {
+    @OneToMany(mappedBy = "chatRoom", cascade = [CascadeType.ALL])
+    @Column(name = "chats", nullable = false)
+    val chats: MutableList<Chat> = mutableListOf()
 }

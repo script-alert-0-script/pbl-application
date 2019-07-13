@@ -6,12 +6,12 @@ import javax.persistence.*
 @Entity
 @Table(name = "item")
 data class Item(
-    @Column(name = "name", nullable = false)
-    var name: String = "",
-
     @ManyToOne
     @JoinColumn(name = "owner", nullable = false)
-    var owner: User = User(),
+    val owner: User,
+
+    @Column(name = "name", nullable = false)
+    var name: String = "",
 
     @Id
     @GeneratedValue
@@ -19,7 +19,7 @@ data class Item(
     val id: Long = 0L
 ) {
     @JsonIgnore
-    @OneToOne
-    @Column(name = "public_room", nullable = false)
-    var publicRoom: ChatRoom = ChatRoom(this)
+    @OneToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "public_room", nullable = false)
+    val publicRoom: ChatRoom = ChatRoom(this)
 }

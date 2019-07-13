@@ -1,23 +1,32 @@
 package jp.ac.titech.itsp.mercari.services
 
 import jp.ac.titech.itsp.mercari.models.Chat
+import jp.ac.titech.itsp.mercari.models.ChatRoom
 import jp.ac.titech.itsp.mercari.models.User
+import jp.ac.titech.itsp.mercari.repositories.ChatRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class ChatService {
+
     @Autowired
     lateinit var itemService: ItemService
 
-    fun create(message: String, user: User, itemId: Long): Chat{
-        var item = itemService.get(itemId)
-        var room = item.publicRoom
-        val chat = Chat(message, user, Date(), room)
-        room.add(chat)
-        return chat
-    }
+    @Autowired
+    lateinit var chatRepository: ChatRepository
 
-    fun getAll(id: Long): List<Chat> = itemService.get(id).publicRoom.chats
+    @Autowired
+    lateinit var chatRoomService: ChatRoomService
+
+    fun create(chatRoom: ChatRoom, user: User, message: String): Chat =
+        chatRepository.save(Chat(chatRoom, user, message))
+
+    fun createByItemId(itemId: Long, user: User, message: String): Chat =
+        create(itemService.get(itemId).publicRoom, user, message)
+
+    fun getAll(chatRoom: ChatRoom): List<Chat> = chatRoomService.get(chatRoom.id, true).chats
+
+    fun getAllByItemId(itemId: Long): List<Chat> = getAll(itemService.get(itemId).publicRoom)
+
 }

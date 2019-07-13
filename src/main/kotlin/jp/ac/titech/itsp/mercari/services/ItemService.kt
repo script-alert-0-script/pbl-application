@@ -13,7 +13,7 @@ class ItemService {
     @Autowired
     lateinit var itemRepository: ItemRepository
 
-    fun create(name: String, owner: User) = itemRepository.save(Item(name, owner))
+    fun create(owner: User, name: String) = itemRepository.save(Item(owner, name))
 
     fun get(id: Long): Item {
         val item = itemRepository.findById(id)

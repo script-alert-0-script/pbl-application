@@ -14,7 +14,12 @@ data class User(
     var password: String = ""
 ) {
     @JsonIgnore
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "owner")
     @Column(name = "items", nullable = false)
     val items: MutableSet<Item> = mutableSetOf()
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    @Column(name = "chats", nullable = false)
+    val chats: MutableSet<Chat> = mutableSetOf()
 }

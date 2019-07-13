@@ -36,7 +36,7 @@ class ItemControllerTests {
     @BeforeEach
     fun before() {
         val user = userRepository.save(User("user"))
-        itemRepository.saveAll((1..5L).map { Item("name$it", user,  it) })
+        itemRepository.saveAll((1..5L).map { Item(user, "name$it", it) })
     }
 
     @Test
