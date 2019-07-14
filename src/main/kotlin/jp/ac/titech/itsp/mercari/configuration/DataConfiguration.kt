@@ -33,11 +33,19 @@ class DataConfiguration {
         userRepository.save(User("default", passwordEncoder.encode("pass"))).run {
             logger.debug("User saved $id:$password")
         }
-        repeat(10) {
-            userRepository.save(User("user$it", passwordEncoder.encode("pass"))).run {
-                val item = itemRepository.save(Item(this, "item-name$it"))
-                chatRepository.save(Chat(item.publicRoom, this, "message"))
+        val userNames = arrayOf("Kazuha", "Yaya", "Yuki")
+        val itemNames = arrayOf("微分積分", "線形代数", "力学")
+        val users = userNames.map {
+            userRepository.save(User(it, passwordEncoder.encode("pass"))).apply {
                 logger.debug("User saved $id:$password")
+            }
+        }
+        repeat(users.size) {
+            itemNames.forEach { name ->
+                itemRepository.save(Item(users[it], name)).let { item ->
+                    chatRepository.save(Chat(item.publicRoom, users[(it + 1) % users.size], "書き込みありますか？"))
+                    chatRepository.save(Chat(item.publicRoom, users[it], "ないです！"))
+                }
             }
         }
     }
