@@ -1,5 +1,6 @@
 package jp.ac.titech.itsp.mercari.models
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 
 @Entity
@@ -13,6 +14,7 @@ data class ChatRoom(
     @Column(name = "id", nullable = false)
     val id: Long = 0L
 ) {
+    @JsonIgnore
     @OneToMany(mappedBy = "chatRoom", cascade = [CascadeType.ALL])
     @Column(name = "chats", nullable = false)
     val chats: MutableList<Chat> = mutableListOf()
