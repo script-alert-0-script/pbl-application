@@ -124,10 +124,10 @@ const ItemPage = {
         },
         request: async function (e) {
             postRequest(this.item.id);
-        }
+        },
         cancel: async function (e) {
             postCancel(this.item.id);
-        }
+        },
         allow: async function (e) {
             postAllow(this.item.id);
         }
