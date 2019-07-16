@@ -27,3 +27,11 @@ async function post(uri, formData) {
 async function postRequest(id) {
     return (await post(`api/user/${id}/request`, new FormData()));
 }
+
+async function postCancel(id) {
+    return (await post(`api/user/${id}/cancel`, new FormData()));
+}
+
+async function postAllow(id) {
+    return (await post(`api/user/${id}/allow`, new FormData()));
+}
