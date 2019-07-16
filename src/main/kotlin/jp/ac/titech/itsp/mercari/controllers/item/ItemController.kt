@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import io.swagger.annotations.ApiOperation
+import jp.ac.titech.itsp.mercari.exceptions.ForbiddenException
+import jp.ac.titech.itsp.mercari.exceptions.IllegalStateException
 import jp.ac.titech.itsp.mercari.models.User
 import jp.ac.titech.itsp.mercari.services.UserService
 
@@ -52,6 +54,8 @@ class ItemController {
             ResponseEntity.ok(itemService.request(id))
         } catch (e: NotFoundException) {
             ResponseEntity.notFound().build()
+        } catch (e: IllegalStateException) {
+            ResponseEntity.badRequest().build()
         }
     }
 
@@ -63,6 +67,10 @@ class ItemController {
             ResponseEntity.ok(itemService.cancel(id))
         } catch (e: NotFoundException) {
             ResponseEntity.notFound().build()
+        } catch (e: IllegalStateException) {
+            ResponseEntity.badRequest().build()
+        } catch (e: ForbiddenException) {
+            ResponseEntity.badRequest().build()
         }
     }
 
@@ -74,6 +82,10 @@ class ItemController {
             ResponseEntity.ok(itemService.allow(id))
         } catch (e: NotFoundException) {
             ResponseEntity.notFound().build()
+        } catch (e: IllegalStateException) {
+            ResponseEntity.badRequest().build()
+        } catch (e: ForbiddenException) {
+            ResponseEntity.badRequest().build()
         }
     }
 
