@@ -19,3 +19,11 @@ async function getItemSearch(q) {
 async function getUser(id) {
     return (await fetch(`api/user/${id}`)).json();
 }
+
+async function post(uri, formData) {
+    return await fetch(uri, {method: "POST", body: formData});
+}
+
+async function postRequest(id) {
+    return (await post(`api/user/${id}/request`, new FormData()));
+}
