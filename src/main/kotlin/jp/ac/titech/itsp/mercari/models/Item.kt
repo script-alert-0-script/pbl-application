@@ -12,6 +12,10 @@ data class Item(
     @JoinColumn(name = "owner", nullable = false)
     var owner: User = User(),
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state", nullable = false)
+    var state: ItemState = ItemState.AVAILABLE,
+
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
