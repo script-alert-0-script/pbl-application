@@ -97,6 +97,9 @@ const ItemPage = {
 <div id="item-page">
     <item-info :item="item"></item-info>
     <user-info :owner="item.owner"></user-info>
+    <button v-if="item.state == 'AVAILABLE'" v-on:click="request">request</button>
+    <button v-if="item.state == 'PENDING'" v-on:click="cancel">cancel</button>
+    <button v-if="item.state == 'PENDING'" v-on:click="allow">allow</button>
     <!-- TODO: manage chats -->
     <chat v-for="log in logs" :user-name="log.name" :message="log.message"></chat>
     <send-message @send-message="pushLog"></send-message>
@@ -118,6 +121,15 @@ const ItemPage = {
                 name: 'my name',
                 message: message
             })
+        },
+        request: async function (e) {
+            postRequest(this.item.id);
+        }
+        cancel: async function (e) {
+            postCancel(this.item.id);
+        }
+        allow: async function (e) {
+            postAllow(this.item.id);
         }
     }
 };
