@@ -4,7 +4,7 @@ const Index = {
     <input v-model="param">
     <ul>
         <li v-for="item in items">
-            <router-link v-bind:to="\`/item/\${item.id}\`">id : {{ item.id }} - name : {{ item.name }} by {{item.owner.id}}</router-link>
+            <router-link v-bind:to="\`/item/\${item.id}\`">id : {{ item.id }} - name : {{ item.name }} by {{item.owner.id}} - state : {{ item.state }}</router-link>
         </li>
     </ul>
 </div>
@@ -31,7 +31,7 @@ const Index = {
 const ItemInfo = {
     template: `
 <div id='item-info'>
-    <p>出品物のid,name : {{ item.id }} - {{item.name}} </p>
+    <p>出品物のid,name,state : {{ item.id }} - {{item.name}} - {{item.state}}</p>
 </div>
 `,
     props: {
