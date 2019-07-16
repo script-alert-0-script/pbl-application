@@ -16,6 +16,10 @@ data class Item(
     @Column(name = "state", nullable = false)
     var state: ItemState = ItemState.AVAILABLE,
 
+    @ManyToOne
+    @JoinColumn(name = "buyer")
+    var buyer: User? = null,
+
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)

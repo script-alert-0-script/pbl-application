@@ -44,6 +44,28 @@ class ItemController {
         }
     }
 
+    @ApiOperation("Request to buy an item by id")
+    @ApiResponses(value = [ApiResponse(code = 404, message = "Item not found")])
+    @PostMapping("/{id}/request")
+    fun request(@PathVariable("id") id: Long): ResponseEntity<Item> {
+        return try {
+            ResponseEntity.ok(itemService.request(id))
+        } catch (e: NotFoundException) {
+            ResponseEntity.notFound().build()
+        }
+    }
+
+    @ApiOperation("Cancel request to buy an item by id")
+    @ApiResponses(value = [ApiResponse(code = 404, message = "Item not found")])
+    @PostMapping("/{id}/cancel")
+    fun cancel(@PathVariable("id") id: Long): ResponseEntity<Item> {
+        return try {
+            ResponseEntity.ok(itemService.cancel(id))
+        } catch (e: NotFoundException) {
+            ResponseEntity.notFound().build()
+        }
+    }
+
     @ApiOperation("Get all items")
     @GetMapping
     fun getAll() = ResponseEntity.ok(itemService.getAll())
