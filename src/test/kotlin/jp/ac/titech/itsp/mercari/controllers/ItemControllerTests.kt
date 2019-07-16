@@ -3,9 +3,11 @@ package jp.ac.titech.itsp.mercari.controllers
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import jp.ac.titech.itsp.mercari.models.Item
+import jp.ac.titech.itsp.mercari.models.ItemState
 import jp.ac.titech.itsp.mercari.models.User
 import jp.ac.titech.itsp.mercari.repositories.ItemRepository
 import jp.ac.titech.itsp.mercari.repositories.UserRepository
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -14,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -22,6 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 class ItemControllerTests {
 
@@ -35,7 +39,7 @@ class ItemControllerTests {
     @BeforeEach
     fun before() {
         val user = userRepository.save(User("user"))
-        itemRepository.saveAll((1..5L).map { Item("name$it", user, it) })
+        itemRepository.saveAll((1..5L).map { Item("name$it", user) })
     }
 
     @Test
@@ -55,6 +59,7 @@ class ItemControllerTests {
             .andExpect(status().isOk)
             .andReturn()
         val actual: Item = jacksonObjectMapper().readValue(result.response.contentAsString)
+        assertEquals(ItemState.AVAILABLE, actual.state)
     }
 
     @Test
