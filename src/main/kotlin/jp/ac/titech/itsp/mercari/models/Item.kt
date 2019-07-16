@@ -8,8 +8,17 @@ data class Item(
     @Column(name = "name", nullable = false)
     var name: String = "",
 
-    @Column(name = "user", nullable = false)
-    var user: String = "",
+    @ManyToOne
+    @JoinColumn(name = "owner", nullable = false)
+    var owner: User = User(),
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state", nullable = false)
+    var state: ItemState = ItemState.AVAILABLE,
+
+    @ManyToOne
+    @JoinColumn(name = "buyer")
+    var buyer: User? = null,
 
     @Id
     @GeneratedValue

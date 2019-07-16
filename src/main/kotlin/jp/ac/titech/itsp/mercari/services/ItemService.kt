@@ -1,7 +1,11 @@
 package jp.ac.titech.itsp.mercari.services
 
 import javassist.NotFoundException
+import jp.ac.titech.itsp.mercari.exceptions.ForbiddenException
+import jp.ac.titech.itsp.mercari.exceptions.IllegalStateException
 import jp.ac.titech.itsp.mercari.models.Item
+import jp.ac.titech.itsp.mercari.models.ItemState
+import jp.ac.titech.itsp.mercari.models.User
 import jp.ac.titech.itsp.mercari.repositories.ItemRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -12,7 +16,10 @@ class ItemService {
     @Autowired
     lateinit var itemRepository: ItemRepository
 
-    fun create(name: String, user: String) = itemRepository.save(Item(name, user))
+    @Autowired
+    lateinit var userService: UserService
+
+    fun create(name: String, owner: User) = itemRepository.save(Item(name, owner))
 
     fun get(id: Long): Item {
         val item = itemRepository.findById(id)
@@ -23,5 +30,25 @@ class ItemService {
     fun getAll(): List<Item> = itemRepository.findAll()
 
     fun search(name: String): List<Item> = itemRepository.findByNameContaining(name)
+
+    fun request(id: Long): Item {
+        val item = get(id)
+        val buyer = userService.me()
+        if (item.state != ItemState.AVAILABLE) throw IllegalStateException("Item state is not ${ItemState.AVAILABLE}")
+        // TODO ban
+        item.state = ItemState.PENDING
+        item.buyer = buyer
+        return itemRepository.save(item)
+    }
+
+    fun cancel(id: Long): Item {
+        val item = get(id)
+        val user = userService.me()
+        if (item.buyer != user && item.owner == user) throw ForbiddenException("You are not owner or buyer.")
+        if (item.state != ItemState.PENDING) throw IllegalStateException("Item state is not ${ItemState.PENDING}")
+        item.state = ItemState.AVAILABLE
+        item.buyer = null
+        return itemRepository.save(item)
+    }
 
 }

@@ -2,12 +2,8 @@ package jp.ac.titech.itsp.mercari.controllers
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import jp.ac.titech.itsp.mercari.models.Item
-import jp.ac.titech.itsp.mercari.models.ItemState
 import jp.ac.titech.itsp.mercari.models.User
-import jp.ac.titech.itsp.mercari.repositories.ItemRepository
 import jp.ac.titech.itsp.mercari.repositories.UserRepository
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -15,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -25,12 +19,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
 @AutoConfigureMockMvc
-class ItemControllerTests {
+class UserControllerTests {
 
-    @Autowired
-    lateinit var itemRepository: ItemRepository
     @Autowired
     lateinit var userRepository: UserRepository
     @Autowired
@@ -38,50 +29,31 @@ class ItemControllerTests {
 
     @BeforeEach
     fun before() {
-        val user = userRepository.save(User("user"))
-        itemRepository.saveAll((1..5L).map { Item("name$it", user) })
+        userRepository.save(User("default-user"))
     }
 
     @Test
-    @WithMockUser
-    fun registerItem() {
+    fun registerUser() {
         mvc.perform(
-            post("/api/item")
+            post("/api/user")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .content("name=hoge")
+                .content("id=myid&password=mypass")
         )
             .andExpect(status().isOk)
     }
 
     @Test
-    fun getItem() {
-        val result = mvc.perform(get("/api/item/1"))
+    fun getUser() {
+        val result = mvc.perform(get("/api/user/default-user"))
             .andExpect(status().isOk)
             .andReturn()
-        val actual: Item = jacksonObjectMapper().readValue(result.response.contentAsString)
-        assertEquals(ItemState.AVAILABLE, actual.state)
+        val actual: User = jacksonObjectMapper().readValue(result.response.contentAsString)
     }
 
     @Test
-    fun getItemNotFound() {
-        mvc.perform(get("/api/item/114514"))
+    fun getUserNotFound() {
+        mvc.perform(get("/api/user/notexist"))
             .andExpect(status().isNotFound)
-    }
-
-    @Test
-    fun getItems() {
-        val result = mvc.perform(get("/api/item"))
-            .andExpect(status().isOk)
-            .andReturn()
-        val actual: List<Item> = jacksonObjectMapper().readValue(result.response.contentAsString)
-    }
-
-    @Test
-    fun searchItem() {
-        val result = mvc.perform(get("/api/item/search?name=am"))
-            .andExpect(status().isOk)
-            .andReturn()
-        val actual: List<Item> = jacksonObjectMapper().readValue(result.response.contentAsString)
     }
 
 }
