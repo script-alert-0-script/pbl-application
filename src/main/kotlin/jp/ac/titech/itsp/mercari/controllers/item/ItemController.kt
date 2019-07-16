@@ -66,6 +66,17 @@ class ItemController {
         }
     }
 
+    @ApiOperation("Allow request to buy an item by id")
+    @ApiResponses(value = [ApiResponse(code = 404, message = "Item not found")])
+    @PostMapping("/{id}/allow")
+    fun allow(@PathVariable("id") id: Long): ResponseEntity<Item> {
+        return try {
+            ResponseEntity.ok(itemService.allow(id))
+        } catch (e: NotFoundException) {
+            ResponseEntity.notFound().build()
+        }
+    }
+
     @ApiOperation("Get all items")
     @GetMapping
     fun getAll() = ResponseEntity.ok(itemService.getAll())

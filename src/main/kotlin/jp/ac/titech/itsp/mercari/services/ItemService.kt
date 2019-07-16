@@ -51,4 +51,13 @@ class ItemService {
         return itemRepository.save(item)
     }
 
+    fun allow(id: Long): Item {
+        val item = get(id)
+        val owner = userService.me()
+        if (item.owner == owner) throw ForbiddenException("You are not owner.")
+        if (item.state != ItemState.PENDING) throw IllegalStateException("Item state is not ${ItemState.PENDING}")
+        item.state = ItemState.COMPLETED
+        return itemRepository.save(item)
+    }
+
 }
