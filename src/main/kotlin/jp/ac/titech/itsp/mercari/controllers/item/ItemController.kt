@@ -56,6 +56,8 @@ class ItemController {
             ResponseEntity.notFound().build()
         } catch (e: IllegalStateException) {
             ResponseEntity.badRequest().build()
+        } catch (e: ForbiddenException) {
+            ResponseEntity.badRequest().build()
         }
     }
 

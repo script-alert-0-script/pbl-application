@@ -34,6 +34,7 @@ class ItemService {
     fun request(id: Long): Item {
         val item = get(id)
         val buyer = userService.me()
+        if (item.owner.id == buyer.id) throw ForbiddenException("You are owner.")
         if (item.state != ItemState.AVAILABLE) throw IllegalStateException("Item state is not ${ItemState.AVAILABLE}")
         // TODO ban
         item.state = ItemState.PENDING
@@ -44,7 +45,7 @@ class ItemService {
     fun cancel(id: Long): Item {
         val item = get(id)
         val user = userService.me()
-        if (item.buyer != user && item.owner == user) throw ForbiddenException("You are not owner or buyer.")
+        if (item.buyer?.id != user.id && item.owner.id != user.id) throw ForbiddenException("You are not owner or buyer.")
         if (item.state != ItemState.PENDING) throw IllegalStateException("Item state is not ${ItemState.PENDING}")
         item.state = ItemState.AVAILABLE
         item.buyer = null
@@ -54,7 +55,7 @@ class ItemService {
     fun allow(id: Long): Item {
         val item = get(id)
         val owner = userService.me()
-        if (item.owner == owner) throw ForbiddenException("You are not owner.")
+        if (item.owner.id != owner.id) throw ForbiddenException("You are not owner.")
         if (item.state != ItemState.PENDING) throw IllegalStateException("Item state is not ${ItemState.PENDING}")
         item.state = ItemState.COMPLETED
         return itemRepository.save(item)
