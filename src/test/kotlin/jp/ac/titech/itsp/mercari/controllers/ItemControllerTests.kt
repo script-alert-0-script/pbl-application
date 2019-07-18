@@ -3,11 +3,11 @@ package jp.ac.titech.itsp.mercari.controllers
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import jp.ac.titech.itsp.mercari.models.Item
+import jp.ac.titech.itsp.mercari.models.ItemState
 import jp.ac.titech.itsp.mercari.models.User
 import jp.ac.titech.itsp.mercari.repositories.ItemRepository
 import jp.ac.titech.itsp.mercari.repositories.UserRepository
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -93,6 +93,44 @@ class ItemControllerTests {
             .andReturn()
         val actual: List<Item> = jacksonObjectMapper().readValue(result.response.contentAsString)
         assertEquals(1, actual.size)
+    }
+
+    @Test
+    @WithMockUser
+    fun request() {
+        val other = userRepository.save(User("other"))
+        val item = itemRepository.save(Item("item", other))
+        val result = mvc.perform(post("/api/item/${item.id}/request"))
+            .andExpect(status().isOk)
+            .andReturn()
+        val actual: Item = jacksonObjectMapper().readValue(result.response.contentAsString)
+        assertEquals(ItemState.PENDING, actual.state)
+        assertEquals(user.id, actual.buyer?.id)
+    }
+
+    @Test
+    @WithMockUser
+    fun cancel() {
+        val other = userRepository.save(User("other"))
+        val item = itemRepository.save(Item("item", user, ItemState.PENDING, other))
+        val result = mvc.perform(post("/api/item/${item.id}/cancel"))
+            .andExpect(status().isOk)
+            .andReturn()
+        val actual: Item = jacksonObjectMapper().readValue(result.response.contentAsString)
+        assertEquals(ItemState.AVAILABLE, actual.state)
+        assertNull(actual.buyer)
+    }
+
+    @Test
+    @WithMockUser
+    fun allow() {
+        val other = userRepository.save(User("other"))
+        val item = itemRepository.save(Item("item", user, ItemState.PENDING, other))
+        val result = mvc.perform(post("/api/item/${item.id}/allow"))
+            .andExpect(status().isOk)
+            .andReturn()
+        val actual: Item = jacksonObjectMapper().readValue(result.response.contentAsString)
+        assertEquals(ItemState.COMPLETED, actual.state)
     }
 
 }
