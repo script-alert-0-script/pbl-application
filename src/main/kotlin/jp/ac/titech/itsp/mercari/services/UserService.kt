@@ -3,7 +3,6 @@ package jp.ac.titech.itsp.mercari.services
 import javassist.NotFoundException
 import jp.ac.titech.itsp.mercari.models.User
 import jp.ac.titech.itsp.mercari.repositories.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -11,12 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class UserService : UserDetailsService {
-
-    @Autowired
-    lateinit var userRepository: UserRepository
-    @Autowired
-    lateinit var passwordEncoder: PasswordEncoder
+class UserService(
+    private val userRepository: UserRepository,
+    private val passwordEncoder: PasswordEncoder
+) : UserDetailsService {
 
     override fun loadUserByUsername(id: String): UserDetails {
         val user = get(id)

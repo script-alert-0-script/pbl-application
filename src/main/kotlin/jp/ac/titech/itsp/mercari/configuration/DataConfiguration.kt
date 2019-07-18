@@ -6,21 +6,18 @@ import jp.ac.titech.itsp.mercari.repositories.ItemRepository
 import jp.ac.titech.itsp.mercari.repositories.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
-class DataConfiguration {
+class DataConfiguration(
+    private val userRepository: UserRepository,
+    private val itemRepository: ItemRepository
+) {
 
     private val logger = LoggerFactory.getLogger(DataConfiguration::class.java)
-
-    @Autowired
-    lateinit var userRepository: UserRepository
-    @Autowired
-    lateinit var itemRepository: ItemRepository
 
     // TODO
     @Profile("dev")

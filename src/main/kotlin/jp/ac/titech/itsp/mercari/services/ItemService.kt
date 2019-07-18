@@ -7,17 +7,13 @@ import jp.ac.titech.itsp.mercari.models.Item
 import jp.ac.titech.itsp.mercari.models.ItemState
 import jp.ac.titech.itsp.mercari.models.User
 import jp.ac.titech.itsp.mercari.repositories.ItemRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ItemService {
-
-    @Autowired
-    lateinit var itemRepository: ItemRepository
-
-    @Autowired
-    lateinit var userService: UserService
+class ItemService(
+    private val itemRepository: ItemRepository,
+    private val userService: UserService
+) {
 
     fun create(name: String, owner: User) = itemRepository.save(Item(name, owner))
 

@@ -1,32 +1,24 @@
 package jp.ac.titech.itsp.mercari.controllers.item
 
-import javassist.NotFoundException
-import jp.ac.titech.itsp.mercari.models.Item
-import jp.ac.titech.itsp.mercari.services.ItemService
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE
-import org.springframework.web.bind.annotation.GetMapping
+import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
-import io.swagger.annotations.ApiOperation
+import javassist.NotFoundException
 import jp.ac.titech.itsp.mercari.exceptions.ForbiddenException
 import jp.ac.titech.itsp.mercari.exceptions.IllegalStateException
-import jp.ac.titech.itsp.mercari.models.User
+import jp.ac.titech.itsp.mercari.models.Item
+import jp.ac.titech.itsp.mercari.services.ItemService
 import jp.ac.titech.itsp.mercari.services.UserService
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
 @RequestMapping("/api/item")
-class ItemController {
-
-    @Autowired
-    lateinit var itemService: ItemService
-
-    @Autowired
-    lateinit var userService: UserService
+class ItemController(
+    private val itemService: ItemService,
+    private val userService: UserService
+) {
 
     @ApiOperation("Register a item")
     @PostMapping

@@ -30,13 +30,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 class ItemControllerTests {
 
     @Autowired
-    lateinit var itemRepository: ItemRepository
+    private lateinit var itemRepository: ItemRepository
     @Autowired
-    lateinit var userRepository: UserRepository
+    private lateinit var userRepository: UserRepository
     @Autowired
-    lateinit var mvc: MockMvc
+    private lateinit var mvc: MockMvc
 
-    lateinit var user: User
+    private lateinit var user: User
 
     @BeforeEach
     fun before() {

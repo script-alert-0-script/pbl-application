@@ -6,16 +6,14 @@ import io.swagger.annotations.ApiResponses
 import javassist.NotFoundException
 import jp.ac.titech.itsp.mercari.models.User
 import jp.ac.titech.itsp.mercari.services.UserService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/user")
-class UserController {
-
-    @Autowired
-    lateinit var userService: UserService
+class UserController(
+    private val userService: UserService
+) {
 
     @ApiOperation("Register a user")
     @PostMapping
