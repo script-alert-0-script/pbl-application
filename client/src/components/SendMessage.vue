@@ -14,6 +14,7 @@
 
         @Emit('send-message')
         sendMessage() {
+            return this.message;
         }
     }
 </script>
