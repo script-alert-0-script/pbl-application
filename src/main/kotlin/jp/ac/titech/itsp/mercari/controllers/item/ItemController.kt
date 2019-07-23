@@ -16,18 +16,17 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/item")
 class ItemController(
-    private val itemService: ItemService,
-    private val userService: UserService
+    private val itemService: ItemService
 ) {
 
-    @ApiOperation("Register a item")
+    @ApiOperation("Register an item")
     @PostMapping
     fun register(@RequestParam name: String): ResponseEntity<Long> {
-        val item = itemService.create(name, userService.me())
+        val item = itemService.create(name)
         return ResponseEntity.ok(item.id)
     }
 
-    @ApiOperation("Get a item by id")
+    @ApiOperation("Get an item by id")
     @ApiResponses(value = [ApiResponse(code = 404, message = "Item not found")])
     @GetMapping("/{id}")
     fun get(@PathVariable("id") id: Long): ResponseEntity<Item> {

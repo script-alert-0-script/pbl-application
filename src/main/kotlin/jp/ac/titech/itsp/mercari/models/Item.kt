@@ -5,12 +5,12 @@ import javax.persistence.*
 @Entity
 @Table(name = "item")
 data class Item(
-    @Column(name = "name", nullable = false)
-    var name: String = "",
-
     @ManyToOne
     @JoinColumn(name = "owner", nullable = false)
-    var owner: User = User(),
+    val owner: User,
+
+    @Column(name = "name", nullable = false)
+    var name: String = "",
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)

@@ -1,4 +1,4 @@
-package jp.ac.titech.itsp.mercari.controllers
+package jp.ac.titech.itsp.mercari.controllers.item
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -60,7 +60,7 @@ class ItemControllerTests {
 
     @Test
     fun getItem() {
-        val item = itemRepository.save(Item("item", user))
+        val item = itemRepository.save(Item(user, "item"))
         val result = mvc.perform(get("/api/item/${item.id}"))
             .andExpect(status().isOk)
             .andReturn()
@@ -76,7 +76,7 @@ class ItemControllerTests {
 
     @Test
     fun getItems() {
-        repeat(5) { itemRepository.save(Item("item $it", user)) }
+        repeat(5) { itemRepository.save(Item(user, "item $it")) }
         val result = mvc.perform(get("/api/item"))
             .andExpect(status().isOk)
             .andReturn()
@@ -86,7 +86,7 @@ class ItemControllerTests {
 
     @Test
     fun searchItem() {
-        itemRepository.save(Item("searchable item", user))
+        itemRepository.save(Item(user, "searchable item"))
         // TODO url encode
         val result = mvc.perform(get("/api/item/search?name=le it"))
             .andExpect(status().isOk)
@@ -99,7 +99,7 @@ class ItemControllerTests {
     @WithMockUser
     fun request() {
         val other = userRepository.save(User("other"))
-        val item = itemRepository.save(Item("item", other))
+        val item = itemRepository.save(Item(other, "item"))
         val result = mvc.perform(post("/api/item/${item.id}/request"))
             .andExpect(status().isOk)
             .andReturn()
@@ -112,7 +112,7 @@ class ItemControllerTests {
     @WithMockUser
     fun cancel() {
         val other = userRepository.save(User("other"))
-        val item = itemRepository.save(Item("item", user, ItemState.PENDING, other))
+        val item = itemRepository.save(Item(user, "item", ItemState.PENDING, other))
         val result = mvc.perform(post("/api/item/${item.id}/cancel"))
             .andExpect(status().isOk)
             .andReturn()
@@ -125,7 +125,7 @@ class ItemControllerTests {
     @WithMockUser
     fun allow() {
         val other = userRepository.save(User("other"))
-        val item = itemRepository.save(Item("item", user, ItemState.PENDING, other))
+        val item = itemRepository.save(Item(user, "item", ItemState.PENDING, other))
         val result = mvc.perform(post("/api/item/${item.id}/allow"))
             .andExpect(status().isOk)
             .andReturn()
