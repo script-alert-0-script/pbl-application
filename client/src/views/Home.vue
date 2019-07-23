@@ -1,18 +1,37 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div id="home">
+    <input v-model="param">
+    <ul>
+      <li v-for="item in items">
+        <router-link v-bind:to="`/item/${item.id}`">id : {{ item.id }} - name : {{ item.name }} by {{item.owner.id}} -
+          state : {{ item.state }}
+        </router-link>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+  import {getAllItems, getItemSearch} from "../fetch";
+  import {debounce} from "lodash";
+  import {Component, Vue, Watch} from "vue-property-decorator";
 
-@Component({
-  components: {
-    HelloWorld
+  @Component({})
+  export default class Home extends Vue {
+    items: Array<any> = []
+    param: string = ''
+
+    async created() {
+      this.items = await getAllItems();
+    }
+
+    async getItemSearch() {
+      if (this.param == '') return;
+      this.items = await getItemSearch(this.param);
+    }
+
+    @Watch('param')
+    debouncedGetItemSearch: Function = debounce(this.getItemSearch, 500)
+
   }
-})
-export default class Home extends Vue {}
 </script>
