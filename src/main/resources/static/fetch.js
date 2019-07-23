@@ -13,11 +13,11 @@ async function getItem(id) {
 async function getItemSearch(q) {
     let param = new URLSearchParams();
     param.set('name', q);
-    return await fetch('api/item/search?' + param.toString());
+    return await fetchJSON('api/item/search?' + param.toString());
 }
 
 async function getUser(id) {
-    return (await fetch(`api/user/${id}`)).json();
+    return await fetchJSON(`api/user/${id}`);
 }
 
 async function post(uri, formData) {

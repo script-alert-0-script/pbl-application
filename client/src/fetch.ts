@@ -17,7 +17,7 @@ export async function getItemSearch(q) {
 }
 
 export async function getUser(id) {
-    return (await fetch(`/api/user/${id}`)).json();
+    return await fetchJSON(`/api/user/${id}`);
 }
 
 async function post(uri, formData) {
