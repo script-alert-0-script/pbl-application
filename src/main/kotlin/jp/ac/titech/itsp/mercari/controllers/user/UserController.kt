@@ -17,9 +17,9 @@ class UserController(
 
     @ApiOperation("Register a user")
     @PostMapping
-    fun register(@RequestParam id: String, @RequestParam password: String): ResponseEntity<String> {
-        val user = userService.create(id, password)
-        return ResponseEntity.ok(user.id)
+    fun register(@RequestParam id: String, @RequestParam name: String, @RequestParam password: String): ResponseEntity<User> {
+        val user = userService.create(id, name, password)
+        return ResponseEntity.ok(user)
     }
 
     @ApiOperation("Get a user by id")
@@ -43,5 +43,4 @@ class UserController(
             ResponseEntity.notFound().build()
         }
     }
-
 }

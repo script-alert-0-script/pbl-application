@@ -8,18 +8,23 @@ import javax.persistence.*
 data class User(
     @Id
     @Column(name = "id", nullable = false)
-    var id: String = "",
+    val id: String = "",
 
+    @Column(name = "name", nullable = false, unique = true)
+    val name: String = "",
+
+    // TODO Authenticate on Firebase
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     var password: String = ""
 ) {
     @JsonIgnore
     @OneToMany(mappedBy = "owner")
-    @Column(name = "my_items", nullable = false)
-    val myItems: MutableSet<Item> = mutableSetOf()
+    @Column(name = "own_items", nullable = false)
+    val ownItems: MutableSet<Item> = mutableSetOf()
 
     @JsonIgnore
     @OneToMany(mappedBy = "buyer")
-    @Column(name = "other_items", nullable = false)
-    val otherItems: MutableSet<Item> = mutableSetOf()
+    @Column(name = "buy_items", nullable = false)
+    val buyItems: MutableSet<Item> = mutableSetOf()
 }

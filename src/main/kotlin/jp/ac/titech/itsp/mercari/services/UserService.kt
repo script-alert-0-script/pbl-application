@@ -24,7 +24,8 @@ class UserService(
             .build()
     }
 
-    fun create(id: String, password: String) = userRepository.save(User(id, passwordEncoder.encode(password)))
+    fun create(id: String, name: String, password: String) =
+        userRepository.save(User(id, name, passwordEncoder.encode(password)))
 
     fun get(id: String): User {
         val user = userRepository.findById(id)
