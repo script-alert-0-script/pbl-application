@@ -12,7 +12,6 @@ import jp.ac.titech.itsp.mercari.services.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-
 @RestController
 @RequestMapping("/api/item")
 class ItemController(

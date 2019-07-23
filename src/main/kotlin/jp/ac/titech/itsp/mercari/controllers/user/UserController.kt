@@ -17,8 +17,10 @@ class UserController(
 
     @ApiOperation("Register a user")
     @PostMapping
-    fun register(@RequestParam id: String, @RequestParam name: String, @RequestParam password: String): ResponseEntity<User> {
-        val user = userService.create(id, name, password)
+    fun register(
+        @RequestParam id: String, @RequestParam name: String, @RequestParam password: String, @RequestParam displayName: String? = null
+    ): ResponseEntity<User> {
+        val user = userService.create(id, name, password, displayName)
         return ResponseEntity.ok(user)
     }
 

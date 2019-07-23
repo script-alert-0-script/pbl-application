@@ -19,17 +19,23 @@ class DataConfiguration(
 
     private val logger = LoggerFactory.getLogger(DataConfiguration::class.java)
 
-    // TODO
     @Profile("dev")
     @Bean
     fun init(passwordEncoder: PasswordEncoder): InitializingBean = InitializingBean {
-        userRepository.save(User("default", passwordEncoder.encode("pass"))).run {
+        // TODO delete default user
+        userRepository.save(User("default", "default", passwordEncoder.encode("pass"), "default")).run {
             logger.debug("User saved $id:$password")
         }
-        repeat(10) {
-            userRepository.save(User("user$it", passwordEncoder.encode("pass"))).run {
-                itemRepository.save(Item("item-name$it", this))
+        val userNames = arrayOf("Kazuha", "Yaya", "Yuki")
+        val itemNames = arrayOf("微分積分", "線形代数", "力学")
+        val users = userNames.map {
+            userRepository.save(User(it, it, passwordEncoder.encode("pass"), it)).apply {
                 logger.debug("User saved $id:$password")
+            }
+        }
+        repeat(users.size) {
+            itemNames.forEach { name ->
+                itemRepository.save(Item(users[it], name))
             }
         }
     }

@@ -98,7 +98,7 @@ class ItemControllerTests {
     @Test
     @WithMockUser
     fun request() {
-        val other = userRepository.save(User("other"))
+        val other = userRepository.save(User("other", "other"))
         val item = itemRepository.save(Item(other, "item"))
         val result = mvc.perform(post("/api/item/${item.id}/request"))
             .andExpect(status().isOk)
@@ -111,7 +111,7 @@ class ItemControllerTests {
     @Test
     @WithMockUser
     fun cancel() {
-        val other = userRepository.save(User("other"))
+        val other = userRepository.save(User("other", "other"))
         val item = itemRepository.save(Item(user, "item", ItemState.PENDING, other))
         val result = mvc.perform(post("/api/item/${item.id}/cancel"))
             .andExpect(status().isOk)
@@ -124,7 +124,7 @@ class ItemControllerTests {
     @Test
     @WithMockUser
     fun allow() {
-        val other = userRepository.save(User("other"))
+        val other = userRepository.save(User("other", "other"))
         val item = itemRepository.save(Item(user, "item", ItemState.PENDING, other))
         val result = mvc.perform(post("/api/item/${item.id}/allow"))
             .andExpect(status().isOk)

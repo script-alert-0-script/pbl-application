@@ -11,12 +11,15 @@ data class User(
     val id: String = "",
 
     @Column(name = "name", nullable = false, unique = true)
-    val name: String = "",
+    var name: String = "",
 
     // TODO Authenticate on Firebase
     @JsonIgnore
     @Column(name = "password", nullable = false)
-    var password: String = ""
+    var password: String = "",
+
+    @Column(name = "display_name", nullable = false)
+    var displayName: String = ""
 ) {
     @JsonIgnore
     @OneToMany(mappedBy = "owner")
