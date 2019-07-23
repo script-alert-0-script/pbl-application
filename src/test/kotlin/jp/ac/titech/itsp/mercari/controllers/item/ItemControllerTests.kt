@@ -87,7 +87,6 @@ class ItemControllerTests {
     @Test
     fun searchItem() {
         itemRepository.save(Item(user, "searchable item"))
-        // TODO url encode
         val result = mvc.perform(get("/api/item/search?name=le it"))
             .andExpect(status().isOk)
             .andReturn()

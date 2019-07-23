@@ -8,7 +8,6 @@ import jp.ac.titech.itsp.mercari.exceptions.ForbiddenException
 import jp.ac.titech.itsp.mercari.exceptions.IllegalStateException
 import jp.ac.titech.itsp.mercari.models.Item
 import jp.ac.titech.itsp.mercari.services.ItemService
-import jp.ac.titech.itsp.mercari.services.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
