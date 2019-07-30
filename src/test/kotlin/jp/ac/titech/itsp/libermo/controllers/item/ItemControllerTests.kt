@@ -1,12 +1,12 @@
-package jp.ac.titech.itsp.mercari.controllers.item
+package jp.ac.titech.itsp.libermo.controllers.item
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import jp.ac.titech.itsp.mercari.models.Item
-import jp.ac.titech.itsp.mercari.models.ItemState
-import jp.ac.titech.itsp.mercari.models.User
-import jp.ac.titech.itsp.mercari.repositories.ItemRepository
-import jp.ac.titech.itsp.mercari.repositories.UserRepository
+import jp.ac.titech.itsp.libermo.models.Item
+import jp.ac.titech.itsp.libermo.models.ItemState
+import jp.ac.titech.itsp.libermo.models.User
+import jp.ac.titech.itsp.libermo.repositories.ItemRepository
+import jp.ac.titech.itsp.libermo.repositories.UserRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

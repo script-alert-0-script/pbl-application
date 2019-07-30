@@ -1,3 +1,3 @@
-package jp.ac.titech.itsp.mercari.exceptions
+package jp.ac.titech.itsp.libermo.exceptions
 
 class IllegalStateException(message: String) : RuntimeException(message)

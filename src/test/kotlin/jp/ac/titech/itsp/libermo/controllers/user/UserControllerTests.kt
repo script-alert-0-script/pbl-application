@@ -1,9 +1,9 @@
-package jp.ac.titech.itsp.mercari.controllers.user
+package jp.ac.titech.itsp.libermo.controllers.user
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import jp.ac.titech.itsp.mercari.models.User
-import jp.ac.titech.itsp.mercari.repositories.UserRepository
+import jp.ac.titech.itsp.libermo.models.User
+import jp.ac.titech.itsp.libermo.repositories.UserRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

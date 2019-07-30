@@ -1,13 +1,13 @@
-package jp.ac.titech.itsp.mercari.controllers.item
+package jp.ac.titech.itsp.libermo.controllers.item
 
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import javassist.NotFoundException
-import jp.ac.titech.itsp.mercari.exceptions.ForbiddenException
-import jp.ac.titech.itsp.mercari.exceptions.IllegalStateException
-import jp.ac.titech.itsp.mercari.models.Item
-import jp.ac.titech.itsp.mercari.services.ItemService
+import jp.ac.titech.itsp.libermo.exceptions.ForbiddenException
+import jp.ac.titech.itsp.libermo.exceptions.IllegalStateException
+import jp.ac.titech.itsp.libermo.models.Item
+import jp.ac.titech.itsp.libermo.services.ItemService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

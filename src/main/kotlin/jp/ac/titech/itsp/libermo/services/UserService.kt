@@ -1,8 +1,8 @@
-package jp.ac.titech.itsp.mercari.services
+package jp.ac.titech.itsp.libermo.services
 
 import javassist.NotFoundException
-import jp.ac.titech.itsp.mercari.models.User
-import jp.ac.titech.itsp.mercari.repositories.UserRepository
+import jp.ac.titech.itsp.libermo.models.User
+import jp.ac.titech.itsp.libermo.repositories.UserRepository
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService

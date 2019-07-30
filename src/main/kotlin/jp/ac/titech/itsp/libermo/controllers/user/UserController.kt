@@ -1,11 +1,11 @@
-package jp.ac.titech.itsp.mercari.controllers.user
+package jp.ac.titech.itsp.libermo.controllers.user
 
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import javassist.NotFoundException
-import jp.ac.titech.itsp.mercari.models.User
-import jp.ac.titech.itsp.mercari.services.UserService
+import jp.ac.titech.itsp.libermo.models.User
+import jp.ac.titech.itsp.libermo.services.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

@@ -1,9 +1,9 @@
-package jp.ac.titech.itsp.mercari.configuration
+package jp.ac.titech.itsp.libermo.configuration
 
-import jp.ac.titech.itsp.mercari.models.Item
-import jp.ac.titech.itsp.mercari.models.User
-import jp.ac.titech.itsp.mercari.repositories.ItemRepository
-import jp.ac.titech.itsp.mercari.repositories.UserRepository
+import jp.ac.titech.itsp.libermo.models.Item
+import jp.ac.titech.itsp.libermo.models.User
+import jp.ac.titech.itsp.libermo.repositories.ItemRepository
+import jp.ac.titech.itsp.libermo.repositories.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.annotation.Bean
