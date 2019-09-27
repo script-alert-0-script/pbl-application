@@ -32,7 +32,7 @@
         item: any = {}
 
         async created() {
-            this.item = await getItem(this.$route.params.id);
+            this.item = await getItem(parseInt(this.$route.params.id));
         }
 
         pushLog(message: string) {
