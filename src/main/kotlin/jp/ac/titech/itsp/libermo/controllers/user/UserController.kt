@@ -1,27 +1,27 @@
-package jp.ac.titech.itsp.mercari.controllers.user
+package jp.ac.titech.itsp.libermo.controllers.user
 
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import javassist.NotFoundException
-import jp.ac.titech.itsp.mercari.models.User
-import jp.ac.titech.itsp.mercari.services.UserService
-import org.springframework.beans.factory.annotation.Autowired
+import jp.ac.titech.itsp.libermo.models.User
+import jp.ac.titech.itsp.libermo.services.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/user")
-class UserController {
-
-    @Autowired
-    lateinit var userService: UserService
+class UserController(
+    private val userService: UserService
+) {
 
     @ApiOperation("Register a user")
     @PostMapping
-    fun register(@RequestParam id: String, @RequestParam password: String): ResponseEntity<String> {
-        val user = userService.create(id, password)
-        return ResponseEntity.ok(user.id)
+    fun register(
+        @RequestParam id: String, @RequestParam name: String, @RequestParam password: String, @RequestParam displayName: String? = null
+    ): ResponseEntity<User> {
+        val user = userService.create(id, name, password, displayName)
+        return ResponseEntity.ok(user)
     }
 
     @ApiOperation("Get a user by id")
@@ -45,5 +45,4 @@ class UserController {
             ResponseEntity.notFound().build()
         }
     }
-
 }

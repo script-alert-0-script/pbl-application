@@ -1,41 +1,30 @@
-package jp.ac.titech.itsp.mercari.controllers.item
+package jp.ac.titech.itsp.libermo.controllers.item
 
-import javassist.NotFoundException
-import jp.ac.titech.itsp.mercari.models.Item
-import jp.ac.titech.itsp.mercari.services.ItemService
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE
-import org.springframework.web.bind.annotation.GetMapping
+import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
-import io.swagger.annotations.ApiOperation
-import jp.ac.titech.itsp.mercari.exceptions.ForbiddenException
-import jp.ac.titech.itsp.mercari.exceptions.IllegalStateException
-import jp.ac.titech.itsp.mercari.models.User
-import jp.ac.titech.itsp.mercari.services.UserService
-
+import javassist.NotFoundException
+import jp.ac.titech.itsp.libermo.exceptions.ForbiddenException
+import jp.ac.titech.itsp.libermo.exceptions.IllegalStateException
+import jp.ac.titech.itsp.libermo.models.Item
+import jp.ac.titech.itsp.libermo.services.ItemService
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/item")
-class ItemController {
+class ItemController(
+    private val itemService: ItemService
+) {
 
-    @Autowired
-    lateinit var itemService: ItemService
-
-    @Autowired
-    lateinit var userService: UserService
-
-    @ApiOperation("Register a item")
+    @ApiOperation("Register an item")
     @PostMapping
     fun register(@RequestParam name: String): ResponseEntity<Long> {
-        val item = itemService.create(name, userService.me())
+        val item = itemService.create(name)
         return ResponseEntity.ok(item.id)
     }
 
-    @ApiOperation("Get a item by id")
+    @ApiOperation("Get an item by id")
     @ApiResponses(value = [ApiResponse(code = 404, message = "Item not found")])
     @GetMapping("/{id}")
     fun get(@PathVariable("id") id: Long): ResponseEntity<Item> {

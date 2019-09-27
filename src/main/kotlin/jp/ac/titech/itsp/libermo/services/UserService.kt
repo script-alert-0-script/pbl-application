@@ -1,9 +1,8 @@
-package jp.ac.titech.itsp.mercari.services
+package jp.ac.titech.itsp.libermo.services
 
 import javassist.NotFoundException
-import jp.ac.titech.itsp.mercari.models.User
-import jp.ac.titech.itsp.mercari.repositories.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
+import jp.ac.titech.itsp.libermo.models.User
+import jp.ac.titech.itsp.libermo.repositories.UserRepository
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -11,12 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class UserService : UserDetailsService {
-
-    @Autowired
-    lateinit var userRepository: UserRepository
-    @Autowired
-    lateinit var passwordEncoder: PasswordEncoder
+class UserService(
+    private val userRepository: UserRepository,
+    private val passwordEncoder: PasswordEncoder
+) : UserDetailsService {
 
     override fun loadUserByUsername(id: String): UserDetails {
         val user = get(id)
@@ -27,7 +24,8 @@ class UserService : UserDetailsService {
             .build()
     }
 
-    fun create(id: String, password: String) = userRepository.save(User(id, passwordEncoder.encode(password)))
+    fun create(id: String, name: String, password: String, displayName: String? = null) =
+        userRepository.save(User(id, name, passwordEncoder.encode(password), displayName ?: ""))
 
     fun get(id: String): User {
         val user = userRepository.findById(id)

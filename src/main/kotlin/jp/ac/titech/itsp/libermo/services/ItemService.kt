@@ -1,25 +1,20 @@
-package jp.ac.titech.itsp.mercari.services
+package jp.ac.titech.itsp.libermo.services
 
 import javassist.NotFoundException
-import jp.ac.titech.itsp.mercari.exceptions.ForbiddenException
-import jp.ac.titech.itsp.mercari.exceptions.IllegalStateException
-import jp.ac.titech.itsp.mercari.models.Item
-import jp.ac.titech.itsp.mercari.models.ItemState
-import jp.ac.titech.itsp.mercari.models.User
-import jp.ac.titech.itsp.mercari.repositories.ItemRepository
-import org.springframework.beans.factory.annotation.Autowired
+import jp.ac.titech.itsp.libermo.exceptions.ForbiddenException
+import jp.ac.titech.itsp.libermo.exceptions.IllegalStateException
+import jp.ac.titech.itsp.libermo.models.Item
+import jp.ac.titech.itsp.libermo.models.ItemState
+import jp.ac.titech.itsp.libermo.repositories.ItemRepository
 import org.springframework.stereotype.Service
 
 @Service
-class ItemService {
+class ItemService(
+    private val itemRepository: ItemRepository,
+    private val userService: UserService
+) {
 
-    @Autowired
-    lateinit var itemRepository: ItemRepository
-
-    @Autowired
-    lateinit var userService: UserService
-
-    fun create(name: String, owner: User) = itemRepository.save(Item(name, owner))
+    fun create(name: String) = itemRepository.save(Item(userService.me(), name))
 
     fun get(id: Long): Item {
         val item = itemRepository.findById(id)

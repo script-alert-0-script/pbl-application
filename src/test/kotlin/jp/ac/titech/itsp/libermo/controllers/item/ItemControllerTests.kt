@@ -1,12 +1,12 @@
-package jp.ac.titech.itsp.mercari.controllers
+package jp.ac.titech.itsp.libermo.controllers.item
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import jp.ac.titech.itsp.mercari.models.Item
-import jp.ac.titech.itsp.mercari.models.ItemState
-import jp.ac.titech.itsp.mercari.models.User
-import jp.ac.titech.itsp.mercari.repositories.ItemRepository
-import jp.ac.titech.itsp.mercari.repositories.UserRepository
+import jp.ac.titech.itsp.libermo.models.Item
+import jp.ac.titech.itsp.libermo.models.ItemState
+import jp.ac.titech.itsp.libermo.models.User
+import jp.ac.titech.itsp.libermo.repositories.ItemRepository
+import jp.ac.titech.itsp.libermo.repositories.UserRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -30,13 +30,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 class ItemControllerTests {
 
     @Autowired
-    lateinit var itemRepository: ItemRepository
+    private lateinit var itemRepository: ItemRepository
     @Autowired
-    lateinit var userRepository: UserRepository
+    private lateinit var userRepository: UserRepository
     @Autowired
-    lateinit var mvc: MockMvc
+    private lateinit var mvc: MockMvc
 
-    lateinit var user: User
+    private lateinit var user: User
 
     @BeforeEach
     fun before() {
@@ -60,7 +60,7 @@ class ItemControllerTests {
 
     @Test
     fun getItem() {
-        val item = itemRepository.save(Item("item", user))
+        val item = itemRepository.save(Item(user, "item"))
         val result = mvc.perform(get("/api/item/${item.id}"))
             .andExpect(status().isOk)
             .andReturn()
@@ -76,7 +76,7 @@ class ItemControllerTests {
 
     @Test
     fun getItems() {
-        repeat(5) { itemRepository.save(Item("item $it", user)) }
+        repeat(5) { itemRepository.save(Item(user, "item $it")) }
         val result = mvc.perform(get("/api/item"))
             .andExpect(status().isOk)
             .andReturn()
@@ -86,8 +86,7 @@ class ItemControllerTests {
 
     @Test
     fun searchItem() {
-        itemRepository.save(Item("searchable item", user))
-        // TODO url encode
+        itemRepository.save(Item(user, "searchable item"))
         val result = mvc.perform(get("/api/item/search?name=le it"))
             .andExpect(status().isOk)
             .andReturn()
@@ -98,8 +97,8 @@ class ItemControllerTests {
     @Test
     @WithMockUser
     fun request() {
-        val other = userRepository.save(User("other"))
-        val item = itemRepository.save(Item("item", other))
+        val other = userRepository.save(User("other", "other"))
+        val item = itemRepository.save(Item(other, "item"))
         val result = mvc.perform(post("/api/item/${item.id}/request"))
             .andExpect(status().isOk)
             .andReturn()
@@ -111,8 +110,8 @@ class ItemControllerTests {
     @Test
     @WithMockUser
     fun cancel() {
-        val other = userRepository.save(User("other"))
-        val item = itemRepository.save(Item("item", user, ItemState.PENDING, other))
+        val other = userRepository.save(User("other", "other"))
+        val item = itemRepository.save(Item(user, "item", ItemState.PENDING, other))
         val result = mvc.perform(post("/api/item/${item.id}/cancel"))
             .andExpect(status().isOk)
             .andReturn()
@@ -124,8 +123,8 @@ class ItemControllerTests {
     @Test
     @WithMockUser
     fun allow() {
-        val other = userRepository.save(User("other"))
-        val item = itemRepository.save(Item("item", user, ItemState.PENDING, other))
+        val other = userRepository.save(User("other", "other"))
+        val item = itemRepository.save(Item(user, "item", ItemState.PENDING, other))
         val result = mvc.perform(post("/api/item/${item.id}/allow"))
             .andExpect(status().isOk)
             .andReturn()

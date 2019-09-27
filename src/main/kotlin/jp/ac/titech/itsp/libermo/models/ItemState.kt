@@ -1,4 +1,4 @@
-package jp.ac.titech.itsp.mercari.models
+package jp.ac.titech.itsp.libermo.models
 
 enum class ItemState {
     AVAILABLE,

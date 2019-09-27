@@ -1,4 +1,4 @@
-package jp.ac.titech.itsp.mercari
+package jp.ac.titech.itsp.libermo
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
