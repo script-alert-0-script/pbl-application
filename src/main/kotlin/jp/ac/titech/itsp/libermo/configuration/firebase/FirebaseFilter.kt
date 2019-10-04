@@ -36,10 +36,29 @@ class FirebaseFilter(
         } catch (e: Exception) {
             return null
         }
+
+        if (!validateDomain(token.email))
+        {
+            // delete invalid user
+            try {
+                FirebaseAuth.getInstance().deleteUser(token.uid)
+            } catch (e: Exception) {
+                // pass
+            }
+
+            // TODO: ドメインが違う場合のレスポンスとか
+            return null
+        }
+
         if (!userService.exists(token.uid)) {
             userService.create(token.uid, token.name)
         }
         return userService.get(token.uid)
+    }
+
+    private fun validateDomain(email: String): Boolean {
+        val mDomain = "@m.titech.ac.jp"
+        return email.endsWith(mDomain)
     }
 
     private fun getToken(request: HttpServletRequest): String? {
