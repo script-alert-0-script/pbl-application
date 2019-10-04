@@ -18,6 +18,7 @@ repositories {
 }
 
 val swaggerVersion = "2.9.2"
+val firebaseVersion = "6.8.1"
 
 dependencies {
     // Kotlin
@@ -32,6 +33,8 @@ dependencies {
         exclude(module = "junit")
     }
     testImplementation("org.springframework.security:spring-security-test")
+    // Auth
+    implementation("com.google.firebase:firebase-admin:$firebaseVersion")
     // Swagger
     implementation("io.springfox:springfox-swagger2:$swaggerVersion")
     implementation("io.springfox:springfox-swagger-ui:$swaggerVersion")

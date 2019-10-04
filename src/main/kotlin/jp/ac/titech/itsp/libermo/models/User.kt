@@ -13,11 +13,6 @@ data class User(
     @Column(name = "name", nullable = false, unique = true)
     var name: String = "",
 
-    // TODO Authenticate on Firebase
-    @JsonIgnore
-    @Column(name = "password", nullable = false)
-    var password: String = "",
-
     @Column(name = "display_name", nullable = false)
     var displayName: String = ""
 ) {
