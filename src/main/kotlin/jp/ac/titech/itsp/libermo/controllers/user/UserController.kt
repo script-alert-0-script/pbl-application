@@ -14,16 +14,6 @@ import org.springframework.web.bind.annotation.*
 class UserController(
     private val userService: UserService
 ) {
-
-    @ApiOperation("Register a user")
-    @PostMapping
-    fun register(
-        @RequestParam id: String, @RequestParam name: String, @RequestParam password: String, @RequestParam displayName: String? = null
-    ): ResponseEntity<User> {
-        val user = userService.create(id, name, password, displayName)
-        return ResponseEntity.ok(user)
-    }
-
     @ApiOperation("Get a user by id")
     @ApiResponses(value = [ApiResponse(code = 404, message = "User not found")])
     @GetMapping("/{id}")
