@@ -4,3 +4,4 @@ pluginManagement {
     }
 }
 rootProject.name = "libermo"
+include("client")
