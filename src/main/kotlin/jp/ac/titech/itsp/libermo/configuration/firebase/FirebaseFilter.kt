@@ -3,57 +3,41 @@ package jp.ac.titech.itsp.libermo.configuration.firebase
 import com.google.firebase.auth.FirebaseAuth
 import jp.ac.titech.itsp.libermo.models.User
 import jp.ac.titech.itsp.libermo.services.UserService
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
-import org.springframework.web.filter.OncePerRequestFilter
-import java.lang.Exception
-import javax.servlet.FilterChain
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter
+import java.util.*
 import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 class FirebaseFilter(
     private val userService: UserService
-) : OncePerRequestFilter() {
+) : AbstractPreAuthenticatedProcessingFilter() {
 
-    override fun doFilterInternal(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        filterChain: FilterChain
-    ) {
-        val user = authenticate(request)
-        if (user != null) {
-            SecurityContextHolder.getContext().authentication =
-                PreAuthenticatedAuthenticationToken(
-                    user, null
-                )
-        }
-        filterChain.doFilter(request, response)
-    }
+    override fun getPreAuthenticatedPrincipal(request: HttpServletRequest) = authenticate(request)
+    override fun getPreAuthenticatedCredentials(request: HttpServletRequest) = getToken(request)
 
     private fun authenticate(request: HttpServletRequest): User? {
+        val auth = FirebaseAuth.getInstance()
+
         val token = try {
-            FirebaseAuth.getInstance().verifyIdToken(getToken(request))
+            auth.verifyIdToken(getToken(request))
         } catch (e: Exception) {
+            logger.warn("Failed to verify token", e)
             return null
         }
 
-        if (!validateDomain(token.email))
-        {
+        if (!validateDomain(token.email)) {
             // delete invalid user
             try {
-                FirebaseAuth.getInstance().deleteUser(token.uid)
+                auth.deleteUser(token.uid)
             } catch (e: Exception) {
-                // pass
+                logger.warn("Failed to delete invalid user", e)
             }
 
             // TODO: ドメインが違う場合のレスポンスとか
             return null
         }
 
-        if (!userService.exists(token.uid)) {
-            userService.create(token.uid, token.name)
-        }
-        return userService.get(token.uid)
+        return if (!userService.exists(token.uid)) userService.create(token.uid, token.email)
+        else userService.get(token.uid)
     }
 
     private fun validateDomain(email: String): Boolean {
@@ -62,9 +46,10 @@ class FirebaseFilter(
     }
 
     private fun getToken(request: HttpServletRequest): String? {
-        val token = request.getHeader("Authorization")
-        return if (token == null || !token.startsWith("Bearer ")) null
-        else token.substring("Bearer ".length)
+        val authorization = request.getHeader("Authorization")
+        val bearerPrefix = "bearer "
+        return if (authorization == null || !authorization.toLowerCase(Locale.ENGLISH).startsWith(bearerPrefix)) null
+        else authorization.substring(bearerPrefix.length)
     }
 
 }

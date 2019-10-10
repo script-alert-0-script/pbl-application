@@ -1,6 +1,8 @@
 package jp.ac.titech.itsp.libermo.models
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.*
 
 @Entity
@@ -15,7 +17,16 @@ data class User(
 
     @Column(name = "display_name", nullable = false)
     var displayName: String = ""
-) {
+) : UserDetails {
+    override fun getUsername() = name
+    override fun getPassword() = ""
+    override fun getAuthorities() = emptyList<GrantedAuthority>()
+
+    override fun isEnabled() = true
+    override fun isAccountNonExpired() = true
+    override fun isCredentialsNonExpired() = true
+    override fun isAccountNonLocked() = true
+
     @JsonIgnore
     @OneToMany(mappedBy = "owner")
     @Column(name = "own_items", nullable = false)

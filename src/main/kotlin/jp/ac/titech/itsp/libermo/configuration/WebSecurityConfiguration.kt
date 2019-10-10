@@ -10,10 +10,13 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.HttpMethod
+import org.springframework.security.authentication.AccountStatusUserDetailsChecker
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter
+import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider
 import javax.servlet.http.HttpServletResponse
 
 @Configuration
@@ -23,20 +26,40 @@ class WebSecurityConfiguration(
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
-        http
-            .csrf()
-            .disable() // TODO
+        http.csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
             .exceptionHandling()
             .authenticationEntryPoint { _, response, _ ->
                 response.status = HttpServletResponse.SC_UNAUTHORIZED
             }
             .and()
-            .addFilterAt(FirebaseFilter(userService), AbstractPreAuthenticatedProcessingFilter::class.java)
+            .addFilter(preAuthenticatedProcessingFilter())
             .authorizeRequests()
             .mvcMatchers(HttpMethod.POST, "/api/**/*").authenticated()
             .mvcMatchers(HttpMethod.PUT, "/api/**/*").authenticated()
             .mvcMatchers(HttpMethod.DELETE, "/api/**/*").authenticated()
+        http.sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
+
+    override fun configure(auth: AuthenticationManagerBuilder) {
+        auth.authenticationProvider(
+            preAuthenticatedAuthenticationProvider()
+        )
+    }
+
+    @Bean
+    fun preAuthenticatedProcessingFilter() =
+        FirebaseFilter(userService).apply {
+            setAuthenticationManager(authenticationManager())
+        }
+
+    @Bean
+    fun preAuthenticatedAuthenticationProvider() =
+        PreAuthenticatedAuthenticationProvider().apply {
+            setPreAuthenticatedUserDetailsService(userService)
+            setUserDetailsChecker(AccountStatusUserDetailsChecker())
+        }
 
     @Bean
     fun initFirebaseApp() = InitializingBean {

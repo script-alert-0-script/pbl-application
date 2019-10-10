@@ -4,12 +4,21 @@ import javassist.NotFoundException
 import jp.ac.titech.itsp.libermo.models.User
 import jp.ac.titech.itsp.libermo.repositories.UserRepository
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.AuthenticationUserDetailsService
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
 import org.springframework.stereotype.Service
 
 @Service
 class UserService(
     private val userRepository: UserRepository
-) {
+) : AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> {
+
+    override fun loadUserDetails(token: PreAuthenticatedAuthenticationToken) =
+        when (val user = token.principal) {
+            is User -> user
+            else -> null
+        }
 
     fun create(id: String, name: String, displayName: String? = null) =
         userRepository.save(User(id, name, displayName ?: name))
