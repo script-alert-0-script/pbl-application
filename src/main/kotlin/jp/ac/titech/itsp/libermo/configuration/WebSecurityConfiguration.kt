@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 import javax.servlet.http.HttpServletResponse
 
 @EnableWebSecurity
@@ -23,7 +24,9 @@ class WebSecurityConfiguration(
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
-        http.csrf().disable()
+        http.csrf()
+            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .logout().disable()
