@@ -11,6 +11,7 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -22,6 +23,10 @@ import javax.servlet.http.HttpServletResponse
 class WebSecurityConfiguration(
     private val userService: UserService
 ) : WebSecurityConfigurerAdapter() {
+
+    override fun configure(web: WebSecurity) {
+        web.ignoring().antMatchers("/favicon.ico", "/css/**", "/js/**", "/img/**")
+    }
 
     override fun configure(http: HttpSecurity) {
         http.csrf()
