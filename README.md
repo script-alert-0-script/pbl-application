@@ -1,13 +1,19 @@
 # libermo
 
-## Development
+## Getting Started
+
+### Get credentials.json
+
+https://console.firebase.google.com/u/0/project/{PROJECT_ID}/settings/serviceaccounts/adminsdk
+
+### Development
 
 ```bash
 cp /path/to/credentials.json src/main/resources/credentials.json
 ./gradlew bootRun
 ```
 
-## Production
+### Production
 
 ```bash
 cp /path/to/credentials.json src/main/resources/credentials.json

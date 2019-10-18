@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     val kotlinVersion = "1.3.31"
@@ -45,9 +46,24 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "1.8"
+tasks {
+    withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "1.8"
+        }
+    }
+    withType<Test> {
+        useJUnitPlatform()
+    }
+    withType<BootJar> {
+        dependsOn("buildClient")
+    }
+    register<Copy>("buildClient") {
+        dependsOn(":client:build")
+        from("client/dist") {
+            include("**/*.*")
+        }
+        into("${project.buildDir}/resources/main/static")
     }
 }

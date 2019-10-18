@@ -1,3 +1,15 @@
+spring:
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
+  datasource:
+    url: jdbc:${MYSQL_URL}
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
 logging:
   level:
     root: ERROR
