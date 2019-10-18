@@ -4,28 +4,24 @@ import javassist.NotFoundException
 import jp.ac.titech.itsp.libermo.models.User
 import jp.ac.titech.itsp.libermo.repositories.UserRepository
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.AuthenticationUserDetailsService
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
 import org.springframework.stereotype.Service
 
 @Service
 class UserService(
-    private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder
-) : UserDetailsService {
+    private val userRepository: UserRepository
+) : AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> {
 
-    override fun loadUserByUsername(id: String): UserDetails {
-        val user = get(id)
-        return org.springframework.security.core.userdetails.User.builder()
-            .username(user.id)
-            .password(user.password)
-            .authorities("USER") // TODO permissions
-            .build()
-    }
+    override fun loadUserDetails(token: PreAuthenticatedAuthenticationToken) =
+        when (val user = token.principal) {
+            is User -> user
+            else -> null
+        }
 
-    fun create(id: String, name: String, password: String, displayName: String? = null) =
-        userRepository.save(User(id, name, passwordEncoder.encode(password), displayName ?: ""))
+    fun create(id: String, name: String, displayName: String? = null) =
+        userRepository.save(User(id, name, displayName ?: name))
 
     fun get(id: String): User {
         val user = userRepository.findById(id)
@@ -33,10 +29,12 @@ class UserService(
         throw NotFoundException("User(id=$id) is not found")
     }
 
+    fun exists(id: String) = userRepository.existsById(id)
+
     fun me(): User {
-        val principal = SecurityContextHolder.getContext().authentication.principal
-        if (principal is org.springframework.security.core.userdetails.User) {
-            return get(principal.username)
+        val user = SecurityContextHolder.getContext().authentication.principal
+        if (user is User) {
+            return get(user.id)
         }
         // TODO delete default user
         return get("default")

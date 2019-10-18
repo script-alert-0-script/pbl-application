@@ -1,6 +1,8 @@
 package jp.ac.titech.itsp.libermo.models
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.*
 
 @Entity
@@ -13,14 +15,30 @@ data class User(
     @Column(name = "name", nullable = false, unique = true)
     var name: String = "",
 
-    // TODO Authenticate on Firebase
-    @JsonIgnore
-    @Column(name = "password", nullable = false)
-    var password: String = "",
-
     @Column(name = "display_name", nullable = false)
     var displayName: String = ""
-) {
+) : UserDetails {
+    @JsonIgnore
+    override fun getUsername() = name
+
+    @JsonIgnore
+    override fun getPassword() = ""
+
+    @JsonIgnore
+    override fun getAuthorities() = emptyList<GrantedAuthority>()
+
+    @JsonIgnore
+    override fun isEnabled() = true
+
+    @JsonIgnore
+    override fun isAccountNonExpired() = true
+
+    @JsonIgnore
+    override fun isCredentialsNonExpired() = true
+
+    @JsonIgnore
+    override fun isAccountNonLocked() = true
+
     @JsonIgnore
     @OneToMany(mappedBy = "owner")
     @Column(name = "own_items", nullable = false)
