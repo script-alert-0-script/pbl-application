@@ -5,7 +5,6 @@ import jp.ac.titech.itsp.libermo.models.User
 import jp.ac.titech.itsp.libermo.repositories.UserRepository
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
 import org.springframework.stereotype.Service
 
@@ -20,8 +19,8 @@ class UserService(
             else -> null
         }
 
-    fun create(id: String, name: String, displayName: String? = null) =
-        userRepository.save(User(id, name, displayName ?: name))
+    fun create(id: String, email: String, name: String? = null) =
+        userRepository.save(User(id, email, name ?: email))
 
     fun get(id: String): User {
         val user = userRepository.findById(id)
