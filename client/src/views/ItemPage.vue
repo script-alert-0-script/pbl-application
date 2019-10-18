@@ -1,5 +1,5 @@
 <template>
-  <div id="item-page">
+  <div v-if="item" id="item-page">
     <item-info :item="item"></item-info>
     <user-info :owner="item.owner"></user-info>
     <button v-if="item.state == 'AVAILABLE'" v-on:click="request">
@@ -20,11 +20,13 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { getItem, postAllow, postCancel, postRequest } from "@/fetch";
+import { getItem, postAllow, postCancel, postRequest } from "@/api";
 import ItemInfo from "@/components/ItemInfo.vue";
 import UserInfo from "@/components/UserInfo.vue";
 import Chat from "@/components/Chat.vue";
 import SendMessage from "@/components/SendMessage.vue";
+import { Item } from "libermo";
+import VueRouter from "vue-router";
 
 @Component({
   components: {
@@ -35,11 +37,11 @@ import SendMessage from "@/components/SendMessage.vue";
   }
 })
 export default class ItemPage extends Vue {
-  logs: any = [
+  logs = [
     { name: "name1", message: "mes1" },
     { name: "name2", message: "mes2" }
   ];
-  item: any = {};
+  item?: Item;
 
   async created() {
     this.item = await getItem(parseInt(this.$route.params.id));
@@ -53,15 +55,15 @@ export default class ItemPage extends Vue {
   }
 
   request() {
-    postRequest(this.item.id);
+    if (this.item) postRequest(this.item.id);
   }
 
   cancel() {
-    postCancel(this.item.id);
+    if (this.item) postCancel(this.item.id);
   }
 
   allow() {
-    postAllow(this.item.id);
+    if (this.item) postAllow(this.item.id);
   }
 }
 </script>

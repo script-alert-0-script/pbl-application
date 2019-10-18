@@ -13,13 +13,14 @@
 </template>
 
 <script lang="ts">
-import { getAllItems, getItemSearch } from "../fetch";
+import { getAllItems, getItemSearch } from "@/api";
 import { debounce } from "lodash";
 import { Component, Vue, Watch } from "vue-property-decorator";
+import { Item } from "libermo";
 
 @Component({})
 export default class Home extends Vue {
-  items: Array<any> = [];
+  items: Item[] = [];
   param: string = "";
 
   async created() {
