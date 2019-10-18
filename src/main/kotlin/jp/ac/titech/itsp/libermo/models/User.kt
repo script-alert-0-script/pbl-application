@@ -12,11 +12,11 @@ data class User(
     @Column(name = "id", nullable = false)
     val id: String = "",
 
-    @Column(name = "name", nullable = false, unique = true)
-    var name: String = "",
+    @Column(name = "email", nullable = false, unique = true)
+    var email: String = "",
 
-    @Column(name = "display_name", nullable = false)
-    var displayName: String = ""
+    @Column(name = "name", nullable = false)
+    var name: String = ""
 ) : UserDetails {
     @JsonIgnore
     override fun getUsername() = name

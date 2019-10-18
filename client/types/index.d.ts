@@ -9,7 +9,7 @@ declare module "libermo" {
 
   export interface User {
     id: number;
+    email: string;
     name: string;
-    displayName: string;
   }
 }
