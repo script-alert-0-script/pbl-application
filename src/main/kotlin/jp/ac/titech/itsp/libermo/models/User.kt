@@ -18,13 +18,25 @@ data class User(
     @Column(name = "display_name", nullable = false)
     var displayName: String = ""
 ) : UserDetails {
+    @JsonIgnore
     override fun getUsername() = name
+
+    @JsonIgnore
     override fun getPassword() = ""
+
+    @JsonIgnore
     override fun getAuthorities() = emptyList<GrantedAuthority>()
 
+    @JsonIgnore
     override fun isEnabled() = true
+
+    @JsonIgnore
     override fun isAccountNonExpired() = true
+
+    @JsonIgnore
     override fun isCredentialsNonExpired() = true
+
+    @JsonIgnore
     override fun isAccountNonLocked() = true
 
     @JsonIgnore
