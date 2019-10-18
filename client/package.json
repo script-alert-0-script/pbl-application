@@ -9,7 +9,6 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.136",
     "lodash": "^4.17.15",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
@@ -18,22 +17,24 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@types/jest": "^23.1.4",
+    "@types/jest": "^24.0.19",
+    "@types/lodash": "^4.14.144",
     "@vue/cli-plugin-eslint": "^4.0.3",
     "@vue/cli-plugin-router": "^4.0.3",
     "@vue/cli-plugin-typescript": "^4.0.3",
     "@vue/cli-plugin-unit-jest": "^4.0.3",
     "@vue/cli-plugin-vuex": "^4.0.3",
     "@vue/cli-service": "^4.0.3",
-    "@vue/eslint-config-prettier": "^4.0.1",
+    "@vue/eslint-config-prettier": "^5.0.0",
     "@vue/eslint-config-typescript": "^4.0.0",
     "@vue/test-utils": "1.0.0-beta.29",
-    "babel-eslint": "^10.0.1",
+    "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "lint-staged": "^8.1.5",
-    "ts-jest": "^23.0.0",
-    "typescript": "^3.4.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-vue": "^5.2.3",
+    "lint-staged": "^9.4.2",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.4",
     "vue-template-compiler": "^2.6.10"
   },
   "gitHooks": {
