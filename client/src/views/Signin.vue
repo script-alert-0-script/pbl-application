@@ -8,7 +8,7 @@
     <input type="password" placeholder="パスワード" v-model="password">
 
     <button>ログイン</button>
-    
+
     <p>アカウントをお持ちでない方は 
       <router-link to="/signup">新規登録</router-link>
     </p>
