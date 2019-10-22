@@ -1,8 +1,8 @@
 package jp.ac.titech.itsp.libermo.configuration.firebase
 
 import com.google.firebase.auth.FirebaseAuth
-import jp.ac.titech.itsp.libermo.models.User
 import jp.ac.titech.itsp.libermo.services.UserService
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter
 import java.util.*
 import javax.servlet.http.HttpServletRequest
@@ -14,13 +14,13 @@ class FirebaseFilter(
     override fun getPreAuthenticatedPrincipal(request: HttpServletRequest) = authenticate(request)
     override fun getPreAuthenticatedCredentials(request: HttpServletRequest) = getToken(request)
 
-    private fun authenticate(request: HttpServletRequest): User? {
+    private fun authenticate(request: HttpServletRequest): UserDetails? {
         val auth = FirebaseAuth.getInstance()
 
         val token = try {
             auth.verifyIdToken(getToken(request))
         } catch (e: Exception) {
-            logger.warn("Failed to verify token", e)
+            logger.info("Failed to verify token", e)
             return null
         }
 

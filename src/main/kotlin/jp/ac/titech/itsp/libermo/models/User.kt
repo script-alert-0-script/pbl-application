@@ -19,7 +19,7 @@ data class User(
     var name: String = ""
 ) : UserDetails {
     @JsonIgnore
-    override fun getUsername() = name
+    override fun getUsername() = id
 
     @JsonIgnore
     override fun getPassword() = ""

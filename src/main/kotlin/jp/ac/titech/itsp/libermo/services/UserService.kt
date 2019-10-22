@@ -1,10 +1,12 @@
 package jp.ac.titech.itsp.libermo.services
 
 import javassist.NotFoundException
+import jp.ac.titech.itsp.libermo.exceptions.UnauthorizedException
 import jp.ac.titech.itsp.libermo.models.User
 import jp.ac.titech.itsp.libermo.repositories.UserRepository
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
 import org.springframework.stereotype.Service
 
@@ -15,7 +17,7 @@ class UserService(
 
     override fun loadUserDetails(token: PreAuthenticatedAuthenticationToken) =
         when (val user = token.principal) {
-            is User -> user
+            is UserDetails -> user
             else -> null
         }
 
@@ -31,12 +33,9 @@ class UserService(
     fun exists(id: String) = userRepository.existsById(id)
 
     fun me(): User {
-        val user = SecurityContextHolder.getContext().authentication.principal
-        if (user is User) {
-            return get(user.id)
-        }
-        // TODO delete default user
-        return get("default")
+        val user = SecurityContextHolder.getContext().authentication?.principal
+        if (user is UserDetails) return get(user.username)
+        throw UnauthorizedException("User is not logged in.")
     }
 
 
