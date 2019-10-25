@@ -1,6 +1,7 @@
 <template>
   <div id="home">
     <router-link to="/signin" tag="button">ログイン</router-link>
+    <router-link to="/exhibit" tag="button">出品</router-link>
     <br />
     <input v-model="param" />
     <ul>

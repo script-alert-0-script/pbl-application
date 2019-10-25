@@ -52,3 +52,7 @@ export async function postCancel(id: number) {
 export async function postAllow(id: number) {
   return (await http.post<Item>(`/api/item/${id}/allow`)).data;
 }
+
+export async function postSubmitItem(name: string) {
+  return (await http.post<Item>(`/api/item/`)).data;
+}
