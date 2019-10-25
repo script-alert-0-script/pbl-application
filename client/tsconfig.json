@@ -11,12 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "types": [
-      "webpack-env",
-      "jest",
-      "./types",
-      "vuetify"
-    ],
+    "types": ["webpack-env", "jest", "vuetify", "./types"],
     "paths": {
       "@/*": ["src/*"]
     },
