@@ -1,4 +1,6 @@
 import axios from "axios";
+import firebase from "firebase/app";
+import "firebase/auth";
 import { Item, User } from "libermo";
 
 const http = axios.create({
@@ -6,10 +8,12 @@ const http = axios.create({
   xsrfCookieName: "XSRF-TOKEN",
   xsrfHeaderName: "X-XSRF-TOKEN"
 });
-http.interceptors.request.use(config => {
-  // TODO get Firebase JWT
-  const token = "";
-  if (token) config.headers["Authorization"] = `Bearer ${token}`;
+http.interceptors.request.use(async config => {
+  const user = firebase.auth().currentUser;
+  if (user) {
+    const token = await user.getIdToken();
+    config.headers["Authorization"] = `Bearer ${token}`;
+  }
   return config;
 });
 
@@ -31,6 +35,10 @@ export async function getItemSearch(q: string) {
 
 export async function getUser(id: number) {
   return (await http.get<User>(`/api/user/${id}`)).data;
+}
+
+export async function getMe() {
+  return (await http.get<User>("/api/user/me")).data;
 }
 
 export async function postRequest(id: number) {

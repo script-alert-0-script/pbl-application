@@ -1,5 +1,7 @@
 <template>
   <div id="home">
+    <router-link to="/signin" tag="button">ログイン</router-link>
+    <br />
     <input v-model="param" />
     <ul>
       <li v-for="item in items" :key="item.id">
