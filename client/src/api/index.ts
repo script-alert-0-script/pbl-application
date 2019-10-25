@@ -54,5 +54,5 @@ export async function postAllow(id: number) {
 }
 
 export async function postSubmitItem(name: string) {
-  return (await http.post<Item>(`/api/item/`)).data;
+  return (await http.post<number>(`/api/item/`, { name })).data;
 }

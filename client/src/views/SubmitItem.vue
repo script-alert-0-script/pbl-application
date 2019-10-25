@@ -16,8 +16,11 @@ import { postSubmitItem } from "@/api";
 export default class SubmitItem extends Vue {
   name = "";
 
-  submitItem() {
-    if (this.name) postSubmitItem(this.name);
+  async submitItem() {
+    if (this.name) {
+      const id = await postSubmitItem(this.name);
+      this.$router.push(`/item/${id}`);
+    }
   }
 }
 </script>
