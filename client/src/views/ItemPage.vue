@@ -41,7 +41,7 @@ export default class ItemPage extends Vue {
     { name: "name1", message: "mes1" },
     { name: "name2", message: "mes2" }
   ];
-  item?: Item;
+  item: Item | null = null;
 
   async created() {
     this.item = await getItem(parseInt(this.$route.params.id));
