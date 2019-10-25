@@ -1,44 +1,43 @@
 <template>
-
   <div id="signin">
     <h2>ログイン</h2>
     <!-- TODO: メールアドレスがmアドレスだけだと分かりやすいように -->
-    <input type="email" placeholder="メールアドレス" v-model="email">
-
-    <input type="password" placeholder="パスワード" v-model="password">
-
-    <button>ログイン</button>
-
-    <p>アカウントをお持ちでない方は 
+    <form @submit.prevent="signin">
+      <input type="email" placeholder="メールアドレス" v-model="email" />
+      <input type="password" placeholder="パスワード" v-model="password" />
+      <button type="submit">ログイン</button>
+    </form>
+    <p>
+      アカウントをお持ちでない方は
       <router-link to="/signup">新規登録</router-link>
     </p>
+    <p>
+      {{ message }}
+    </p>
   </div>
-
 </template>
 
 <script lang="ts">
-/*
-import { getAllItems, getItemSearch } from "@/api";
-import { debounce } from "lodash";
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { Item } from "libermo";
+import { Component, Vue } from "vue-property-decorator";
+import { signin } from "@/auth";
 
 @Component({})
-export default class Home extends Vue {
-  items: Item[] = [];
-  param: string = "";
+export default class Signin extends Vue {
+  email = "";
+  password = "";
+  message = "";
 
-  async created() {
-    this.items = await getAllItems();
+  signin() {
+    signin(this.email, this.password)
+      .then(async () => {
+        // TODO: GET /api/user/me
+        this.$router.push("/");
+      })
+      .catch(e => {
+        if (e instanceof Error) {
+          this.message = e.message;
+        }
+      });
   }
-
-  async getItemSearch() {
-    if (this.param == "") return;
-    this.items = await getItemSearch(this.param);
-  }
-
-  @Watch("param")
-  debouncedGetItemSearch: Function = debounce(this.getItemSearch, 500);
 }
-*/
 </script>
