@@ -9,11 +9,11 @@ const settings: firebase.auth.ActionCodeSettings = {
   handleCodeInApp: false
 };
 
-export async function signin(email: string, password: string) {
+export async function signIn(email: string, password: string) {
   await firebase.auth().signInWithEmailAndPassword(email, password);
 }
 
-export async function signup(email: string, password: string) {
+export async function signUp(email: string, password: string) {
   const providers = await firebase.auth().fetchSignInMethodsForEmail(email);
   if (
     providers.find(
@@ -29,6 +29,6 @@ export async function signup(email: string, password: string) {
   if (user) user.sendEmailVerification(settings);
 }
 
-export async function signout() {
+export async function signOut() {
   await firebase.auth().signOut();
 }

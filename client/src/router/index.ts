@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@/views/Home.vue";
-import Signup from "@/views/Signup.vue"
-import Signin from "@/views/Signin.vue"
+import SignUp from "@/views/SignUp.vue";
+import SignIn from "@/views/SignIn.vue";
 
 Vue.use(VueRouter);
 
@@ -27,12 +27,12 @@ export default new VueRouter({
     {
       path: "/signup",
       name: "signup",
-      component: Signup
+      component: SignUp
     },
     {
       path: "/signin",
       name: "signin",
-      component: Signin
+      component: SignIn
     }
   ]
 });

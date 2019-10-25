@@ -1,15 +1,15 @@
 <template>
-  <div id="signup">
-    <h2>ユーザー登録</h2>
+  <div id="signin">
+    <h2>ログイン</h2>
     <!-- TODO: メールアドレスがmアドレスだけだと分かりやすいように -->
-    <form @submit.prevent="signup">
+    <form @submit.prevent="signIn">
       <input type="email" placeholder="メールアドレス" v-model="email" />
       <input type="password" placeholder="パスワード" v-model="password" />
-      <button type="submit">登録</button>
+      <button type="submit">ログイン</button>
     </form>
     <p>
-      アカウントをお持ちの方は
-      <router-link to="/signin">ログイン</router-link>
+      アカウントをお持ちでない方は
+      <router-link to="/signup">新規登録</router-link>
     </p>
     <p>
       {{ message }}
@@ -19,19 +19,19 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import firebase from "firebase";
-import { signup } from "@/auth";
+import { signIn } from "@/auth";
 
 @Component({})
-export default class Signup extends Vue {
-  email: string = "";
-  password: string = "";
+export default class SignIn extends Vue {
+  email = "";
+  password = "";
   message = "";
 
-  signup() {
-    signup(this.email, this.password)
-      .then(() => {
-        this.message = "メールを確認してください";
+  signIn() {
+    signIn(this.email, this.password)
+      .then(async () => {
+        // TODO: GET /api/user/me
+        this.$router.push("/");
       })
       .catch(e => {
         if (e instanceof Error) {
