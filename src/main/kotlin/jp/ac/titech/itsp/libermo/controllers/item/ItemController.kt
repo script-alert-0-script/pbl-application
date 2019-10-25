@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import javassist.NotFoundException
+import jp.ac.titech.itsp.libermo.controllers.item.request.RegisterItemRequest
 import jp.ac.titech.itsp.libermo.exceptions.ForbiddenException
 import jp.ac.titech.itsp.libermo.exceptions.IllegalStateException
 import jp.ac.titech.itsp.libermo.models.Item
@@ -19,8 +20,8 @@ class ItemController(
 
     @ApiOperation("Register an item")
     @PostMapping
-    fun register(@RequestParam name: String): ResponseEntity<Long> {
-        val item = itemService.create(name)
+    fun register(@RequestBody request: RegisterItemRequest): ResponseEntity<Long> {
+        val item = itemService.create(request.name)
         return ResponseEntity.ok(item.id)
     }
 
