@@ -4,6 +4,7 @@ import Home from "@/views/Home.vue";
 import ItemPage from "@/views/ItemPage.vue";
 import SignUp from "@/views/SignUp.vue";
 import SignIn from "@/views/SignIn.vue";
+import SubmitItem from "@/views/SubmitItem.vue";
 
 Vue.use(VueRouter);
 
@@ -20,6 +21,11 @@ export default new VueRouter({
       path: "/item/:id",
       name: "item-page",
       component: ItemPage
+    },
+    {
+      path: "/exhibit",
+      name: "submit-item",
+      component: SubmitItem
     },
     {
       path: "/signup",
