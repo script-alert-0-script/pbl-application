@@ -13,6 +13,8 @@ jobs:
     steps:
       - checkout
 
+      - run: echo $FIREBASE_CREDENTIALS | base64 -d > ./src/main/resources/credentials.json
+
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "build.gradle.kts" }}

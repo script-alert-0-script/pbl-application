@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
@@ -40,14 +41,15 @@ class ItemControllerTests {
 
     @BeforeEach
     fun before() {
-        user = userRepository.save(User("user"))
+        user = userRepository.save(User(TEST_ID, TEST_EMAIL))
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(TEST_ID)
     fun registerItem() {
         val id = mvc.perform(
             post("/api/item")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content("name=hoge")
         )
@@ -55,7 +57,6 @@ class ItemControllerTests {
             .andReturn().response.contentAsString.toLong()
         assertTrue(itemRepository.existsById(id))
         assertEquals("hoge", itemRepository.getOne(id).name)
-
     }
 
     @Test
@@ -69,12 +70,14 @@ class ItemControllerTests {
     }
 
     @Test
+    @WithMockUser(TEST_ID)
     fun getItemNotFound() {
         mvc.perform(get("/api/item/114514"))
             .andExpect(status().isNotFound)
     }
 
     @Test
+    @WithMockUser(TEST_ID)
     fun getItems() {
         repeat(5) { itemRepository.save(Item(user, "item $it")) }
         val result = mvc.perform(get("/api/item"))
@@ -85,6 +88,7 @@ class ItemControllerTests {
     }
 
     @Test
+    @WithMockUser(TEST_ID)
     fun searchItem() {
         itemRepository.save(Item(user, "searchable item"))
         val result = mvc.perform(get("/api/item/search?name=le it"))
@@ -95,11 +99,14 @@ class ItemControllerTests {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(TEST_ID)
     fun request() {
         val other = userRepository.save(User("other", "other"))
         val item = itemRepository.save(Item(other, "item"))
-        val result = mvc.perform(post("/api/item/${item.id}/request"))
+        val result = mvc.perform(
+            post("/api/item/${item.id}/request")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+        )
             .andExpect(status().isOk)
             .andReturn()
         val actual: Item = jacksonObjectMapper().readValue(result.response.contentAsString)
@@ -108,11 +115,14 @@ class ItemControllerTests {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(TEST_ID)
     fun cancel() {
         val other = userRepository.save(User("other", "other"))
         val item = itemRepository.save(Item(user, "item", ItemState.PENDING, other))
-        val result = mvc.perform(post("/api/item/${item.id}/cancel"))
+        val result = mvc.perform(
+            post("/api/item/${item.id}/cancel")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+        )
             .andExpect(status().isOk)
             .andReturn()
         val actual: Item = jacksonObjectMapper().readValue(result.response.contentAsString)
@@ -121,15 +131,23 @@ class ItemControllerTests {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(TEST_ID)
     fun allow() {
         val other = userRepository.save(User("other", "other"))
         val item = itemRepository.save(Item(user, "item", ItemState.PENDING, other))
-        val result = mvc.perform(post("/api/item/${item.id}/allow"))
+        val result = mvc.perform(
+            post("/api/item/${item.id}/allow")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+        )
             .andExpect(status().isOk)
             .andReturn()
         val actual: Item = jacksonObjectMapper().readValue(result.response.contentAsString)
         assertEquals(ItemState.COMPLETED, actual.state)
+    }
+
+    companion object {
+        const val TEST_ID = "test-user"
+        const val TEST_EMAIL = "test@m.titech.ac.jp"
     }
 
 }
