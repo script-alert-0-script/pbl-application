@@ -1,7 +1,5 @@
 <template>
-  <div id="user-info">
-    <p>ownerのid : {{ owner.id }}</p>
-  </div>
+  <p>出品者 : {{ owner.id }}</p>
 </template>
 
 <script lang="ts">
