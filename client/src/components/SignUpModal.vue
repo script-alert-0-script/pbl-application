@@ -1,10 +1,10 @@
 <template>
   <v-dialog v-model="dialog" max-width="600px">
-    <v-btn slot="activator" color="black" dark flat outlined @click.stop="open">ログイン</v-btn>
+    <v-btn slot="activator" color="black" dark flat outlined @click.stop="open">ユーザ登録</v-btn>
 
     <v-card>
       <v-card-title class="headline black white--text">
-        libermoにログイン
+        libermoへようこそ！
         <v-spacer />
         <v-btn icon dark @click.stop="close">
           <v-icon>mdi-close</v-icon>
@@ -31,14 +31,14 @@
           </v-row>
 
           <!--TODO: センタリング -->
-          <v-btn color="grey darken-3" dark @click.prevent="signIn">ログイン</v-btn>
+          <v-btn color="grey darken-3" dark @click.prevent="signUp">ユーザ登録</v-btn>
 
           <!--TODO: センタリング -->
           <p>{{ message }}</p>
           <p>
-            アカウントをお持ちでない方は
+            アカウントをお持ちの方は
             <!--TODO-->
-            <router-link to="/signup">新規登録</router-link>
+            <router-link to="/signin">ログイン</router-link>
           </p>
         </v-card-text>
       </v-container>
@@ -48,22 +48,20 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { signIn } from "@/auth";
+import { signUp } from "@/auth";
 
 @Component({})
-export default class SignInModal extends Vue {
+export default class SignUpModal extends Vue {
   readonly domain = "@m.titech.ac.jp";
   email = "";
   password = "";
   message = "";
   dialog = false;
 
-  signIn() {
-    signIn(this.email + this.domain, this.password)
-      .then(async () => {
-        // TODO: GET /api/user/me
-        this.$router.push("/");
-        close();
+  signUp() {
+    signUp(this.email + this.domain, this.password)
+      .then(() => {
+        this.message = "登録メールが送信されました。メールを確認してください";
       })
       .catch(e => {
         if (e instanceof Error) {
