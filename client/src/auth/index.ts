@@ -9,6 +9,10 @@ const settings: firebase.auth.ActionCodeSettings = {
   handleCodeInApp: false
 };
 
+export function isAuthenticated() {
+  return !!firebase.auth().currentUser;
+}
+
 export async function signIn(email: string, password: string) {
   await firebase.auth().signInWithEmailAndPassword(email, password);
 }
