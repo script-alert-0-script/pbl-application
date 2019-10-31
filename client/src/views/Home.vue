@@ -28,15 +28,12 @@
       <v-btn v-else color="accent" class="d-none d-sm-flex">出品</v-btn>
     </v-app-bar>
     <v-content>
-      <v-container fluid fill-height>
-        <ul>
-          <li v-for="item in items" :key="item.id">
-            <router-link v-bind:to="`/item/${item.id}`">
-              id : {{ item.id }} - name : {{ item.name }} by
-              {{ item.owner.id }} - state : {{ item.state }}
-            </router-link>
-          </li>
-        </ul>
+      <v-container fill-height>
+        <v-row>
+          <v-col v-for="item in items" :key="item.id" cols="6" sm="4" lg="3">
+            <item-card :item="item" />
+          </v-col>
+        </v-row>
       </v-container>
     </v-content>
   </v-app>
@@ -48,8 +45,13 @@ import { debounce } from "lodash";
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { Item } from "libermo";
 import { isAuthenticated } from "@/auth";
+import ItemCard from "@/components/home/ItemCard.vue";
 
-@Component({})
+@Component({
+  components: {
+    ItemCard
+  }
+})
 export default class Home extends Vue {
   items: Item[] = [];
   param: string = "";
