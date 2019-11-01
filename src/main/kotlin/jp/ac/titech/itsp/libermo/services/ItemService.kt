@@ -14,7 +14,8 @@ class ItemService(
     private val userService: UserService
 ) {
 
-    fun create(name: String) = itemRepository.save(Item(userService.me(), name))
+    fun create(name: String, author: String, description: String)
+            = itemRepository.save(Item(userService.me(), name, author, description))
 
     fun get(id: Long): Item {
         val item = itemRepository.findById(id)

@@ -54,7 +54,7 @@
             <v-col cols="12">
               説明
               <v-textarea
-                v-model="message"
+                v-model="description"
                 outlined
                 placeholder="本の状態や、受け渡し希望キャンパスなど"
               ></v-textarea>
@@ -79,12 +79,12 @@ import { postSubmitItem } from "@/api";
 export default class SignInModal extends Vue {
   name = "";
   author = "";
-  message = "";
+  description = "";
   dialog = false;
 
   exhibit() {
     if (this.name) {
-      postSubmitItem(this.name).then(async () => {
+      postSubmitItem(this.name, this.author, this.description).then(async () => {
         this.$router.push("/");
         close();
       });
