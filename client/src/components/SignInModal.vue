@@ -57,7 +57,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { signIn } from "@/auth";
+import auth from "@/auth";
 
 @Component({})
 export default class SignInModal extends Vue {
@@ -68,10 +68,9 @@ export default class SignInModal extends Vue {
   dialog = false;
 
   signIn() {
-    signIn(this.email + this.domain, this.password)
+    auth
+      .signIn(this.email + this.domain, this.password)
       .then(async () => {
-        // TODO: GET /api/user/me
-        this.$router.push("/");
         close();
       })
       .catch(e => {

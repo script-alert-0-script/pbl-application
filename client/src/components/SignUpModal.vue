@@ -57,7 +57,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { signUp } from "@/auth";
+import auth from "@/auth";
 
 @Component({})
 export default class SignUpModal extends Vue {
@@ -68,7 +68,8 @@ export default class SignUpModal extends Vue {
   dialog = false;
 
   signUp() {
-    signUp(this.email + this.domain, this.password)
+    auth
+      .signUp(this.email + this.domain, this.password)
       .then(() => {
         this.message = "登録メールが送信されました。メールを確認してください";
       })

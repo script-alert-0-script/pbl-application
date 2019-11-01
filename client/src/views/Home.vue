@@ -44,7 +44,8 @@ import { getAllItems, getItemSearch } from "@/api";
 import { debounce } from "lodash";
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { Item } from "libermo";
-import { isAuthenticated } from "@/auth";
+import auth from "@/auth";
+import { users } from "@/store/modules/user";
 import ItemCard from "@/components/home/ItemCard.vue";
 
 @Component({
@@ -66,7 +67,7 @@ export default class Home extends Vue {
   }
 
   get isAuthenticated() {
-    return isAuthenticated();
+    return users.isAuthenticated;
   }
 
   @Watch("param")
