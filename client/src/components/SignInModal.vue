@@ -1,6 +1,8 @@
 <template>
   <v-dialog v-model="dialog" max-width="600px">
-    <v-btn slot="activator" color="black" dark flat outlined @click.stop="open">ログイン</v-btn>
+    <v-btn slot="activator" color="black" dark flat outlined @click.stop="open"
+      >ログイン</v-btn
+    >
 
     <v-card>
       <v-card-title class="headline black white--text">
@@ -26,12 +28,19 @@
             </v-col>
             <v-col cols="12">
               パスワード
-              <v-text-field type="password" v-model="password" placeholder="password" outlined></v-text-field>
+              <v-text-field
+                type="password"
+                v-model="password"
+                placeholder="password"
+                outlined
+              ></v-text-field>
             </v-col>
           </v-row>
 
           <!--TODO: センタリング -->
-          <v-btn color="grey darken-3" dark @click.prevent="signIn">ログイン</v-btn>
+          <v-btn color="grey darken-3" dark @click.prevent="signIn"
+            >ログイン</v-btn
+          >
 
           <!--TODO: センタリング -->
           <p>{{ message }}</p>

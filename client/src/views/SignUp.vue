@@ -1,8 +1,8 @@
 <template>
   <v-app>
-  <div id="signup">
-    <sign-up-modal />
-  </div>
+    <div id="signup">
+      <sign-up-modal />
+    </div>
   </v-app>
 </template>
 
@@ -14,6 +14,5 @@ import SignUpModal from "@/components/SignUpModal.vue";
     "sign-up-modal": SignUpModal
   }
 })
-export default class SignUp extends Vue {
-}
+export default class SignUp extends Vue {}
 </script>
