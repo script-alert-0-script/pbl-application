@@ -22,7 +22,7 @@
         v-model="param"
       />
       <v-spacer class="d-none d-sm-flex" />
-      <v-btn v-if="isAuthenticated" to="/signin" class="d-none d-sm-flex">
+      <v-btn v-if="!isAuthenticated" to="/signin" class="d-none d-sm-flex">
         ログイン
       </v-btn>
       <v-btn v-else color="accent" class="d-none d-sm-flex">出品</v-btn>
