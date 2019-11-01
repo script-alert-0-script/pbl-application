@@ -42,6 +42,7 @@ dependencies {
     // Other
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     runtimeOnly("com.h2database:h2")
+    runtimeOnly("mysql:mysql-connector-java:8.+")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
