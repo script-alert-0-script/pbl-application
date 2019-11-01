@@ -11,6 +11,6 @@ node {
 tasks {
     register<NpmTask>("build") {
         dependsOn("npmInstall")
-        setArgs(listOf("build"))
+        setArgs(listOf("run", "build"))
     }
 }
