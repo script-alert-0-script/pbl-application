@@ -25,7 +25,7 @@
       <v-btn v-if="!isAuthenticated" to="/signin" class="d-none d-sm-flex">
         ログイン
       </v-btn>
-      <v-btn v-else color="accent" class="d-none d-sm-flex">出品</v-btn>
+      <exhibit-modal v-else />
     </v-app-bar>
     <v-content>
       <v-container fill-height>
@@ -46,10 +46,12 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { Item } from "libermo";
 import { isAuthenticated } from "@/auth";
 import ItemCard from "@/components/home/ItemCard.vue";
+import ExhibitModal from "@/components/ExhibitModal.vue";
 
 @Component({
   components: {
-    ItemCard
+    ItemCard,
+    "exhibit-modal": ExhibitModal
   }
 })
 export default class Home extends Vue {
