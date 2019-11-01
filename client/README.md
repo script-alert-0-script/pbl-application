@@ -32,3 +32,10 @@ npm run test:unit
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Install vuetify (and cli)
+```
+npm install @vue/cli -g
+vue add vuetify
+```
+

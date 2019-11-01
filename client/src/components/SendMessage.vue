@@ -1,7 +1,15 @@
 <template>
   <div id="send-message">
-    <input type="text" v-model="message" />
-    <button v-on:click="sendMessage">送信</button>
+    <v-textarea
+      class="mx-4"
+      v-model="message"
+      outlined
+      solo
+      placeholder="コメントを入力"
+    ></v-textarea>
+    <v-layout justify-center>
+      <v-btn class="my-0" @click.prevent="sendMessage">コメント送信</v-btn>
+    </v-layout>
   </div>
 </template>
 
