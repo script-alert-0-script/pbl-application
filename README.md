@@ -17,6 +17,6 @@ cp /path/to/credentials.json src/main/resources/credentials.json
 
 ```bash
 cp /path/to/credentials.json src/main/resources/credentials.json
-./gradlew bootJar
-SPRING_PROFILES_ACTIVE=prod java -jar build/libs/*.jar
+./gradlew build -x test
+MYSQL_URL='mysql://user:pass@example.com:3306/name' SPRING_PROFILES_ACTIVE=prod java -jar build/libs/*.jar
 ```
