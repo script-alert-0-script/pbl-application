@@ -51,7 +51,7 @@ class ItemControllerTests {
             post("/api/item")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""{ "name": "hoge" } """)
+                .content("""{ "name": "hoge", "author": "foo", "description": "bar" } """)
         )
             .andExpect(status().isOk)
             .andReturn().response.contentAsString.toLong()
