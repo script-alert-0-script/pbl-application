@@ -1,13 +1,13 @@
 <template>
   <v-dialog v-model="dialog" max-width="600px">
     <template v-slot:activator="{ on }">
-    <v-btn
-      color="accent"
-      class="d-none d-sm-flex"
-      @click.stop="open"
+      <v-btn
+        color="accent"
+        class="d-none d-sm-flex"
+        @click.stop="open"
         v-on="on"
-      >出品</v-btn
-    >
+        >出品</v-btn
+      >
     </template>
 
     <v-card>
@@ -86,8 +86,7 @@ export default class ExhibitModal extends Vue {
   async exhibit() {
     if (this.name) {
       await postSubmitItem(this.name, this.author, this.description);
-      this.$router.push("/");
-      close();
+      this.close();
     }
   }
 
