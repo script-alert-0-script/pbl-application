@@ -76,7 +76,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { postSubmitItem } from "@/api";
 
 @Component({})
-export default class SignInModal extends Vue {
+export default class ExhibitModal extends Vue {
   name = "";
   author = "";
   description = "";
