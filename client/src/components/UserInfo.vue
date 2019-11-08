@@ -1,5 +1,5 @@
 <template>
-  <p>出品者 : {{ owner.id }}</p>
+  <p>出品者 : {{ owner.name }}</p>
 </template>
 
 <script lang="ts">
