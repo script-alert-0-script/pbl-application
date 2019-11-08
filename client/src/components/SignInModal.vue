@@ -1,9 +1,5 @@
 <template>
   <v-dialog v-model="dialog" max-width="600px">
-    <v-btn slot="activator" color="black" dark flat outlined @click.stop="open"
-      >ログイン</v-btn
-    >
-
     <v-card>
       <v-card-title class="headline black white--text">
         libermoにログイン
@@ -57,7 +53,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { signIn } from "@/auth";
+import auth from "@/auth";
 
 @Component({})
 export default class SignInModal extends Vue {
@@ -65,20 +61,17 @@ export default class SignInModal extends Vue {
   email = "";
   password = "";
   message = "";
-  dialog = false;
+  dialog = true;
 
-  signIn() {
-    signIn(this.email + this.domain, this.password)
-      .then(async () => {
-        // TODO: GET /api/user/me
-        this.$router.push("/");
-        close();
-      })
-      .catch(e => {
-        if (e instanceof Error) {
-          this.message = e.message;
-        }
-      });
+  async signIn() {
+    try {
+      await auth.signIn(this.email + this.domain, this.password);
+      close();
+    } catch (e) {
+      if (e instanceof Error) {
+        this.message = e.message;
+      }
+    }
   }
 
   open() {

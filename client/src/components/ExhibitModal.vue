@@ -82,14 +82,11 @@ export default class ExhibitModal extends Vue {
   description = "";
   dialog = false;
 
-  exhibit() {
+  async exhibit() {
     if (this.name) {
-      postSubmitItem(this.name, this.author, this.description).then(
-        async () => {
-          this.$router.push("/");
-          close();
-        }
-      );
+      await postSubmitItem(this.name, this.author, this.description);
+      this.$router.push("/");
+      close();
     }
   }
 
