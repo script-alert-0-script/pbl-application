@@ -53,7 +53,9 @@
         <v-col cols="12" md="7">
           <v-card-title class="headline mb-1">{{ item.name }}</v-card-title>
           <!-- TODO: add author to Item -->
-          <v-card-subtitle class="black--text">{{ item.author }}</v-card-subtitle>
+          <v-card-subtitle class="black--text">{{
+            item.author
+          }}</v-card-subtitle>
           <v-card-text class="black--text">
             <user-info :owner="item.owner"></user-info>
             <div>

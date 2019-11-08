@@ -53,6 +53,11 @@ export async function postAllow(id: number) {
   return (await http.post<Item>(`/api/item/${id}/allow`)).data;
 }
 
-export async function postSubmitItem(name: string, author: string, description: string) {
-  return (await http.post<number>(`/api/item/`, { name, author, description })).data;
+export async function postSubmitItem(
+  name: string,
+  author: string,
+  description: string
+) {
+  return (await http.post<number>(`/api/item/`, { name, author, description }))
+    .data;
 }

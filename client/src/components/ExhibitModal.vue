@@ -1,6 +1,6 @@
-<template>
+<template v-slot:activator="{ on }">
   <v-dialog v-model="dialog" max-width="600px">
-    <!--<v-btn slot="activator" color="black" dark flat outlined @click.stop="open"-->
+    <!--<v-btn slot="activator" color="black" dark flat outlined @click.stop="open">-->
     <v-btn
       slot="activator"
       color="accent"
@@ -84,10 +84,12 @@ export default class ExhibitModal extends Vue {
 
   exhibit() {
     if (this.name) {
-      postSubmitItem(this.name, this.author, this.description).then(async () => {
-        this.$router.push("/");
-        close();
-      });
+      postSubmitItem(this.name, this.author, this.description).then(
+        async () => {
+          this.$router.push("/");
+          close();
+        }
+      );
     }
   }
 
