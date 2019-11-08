@@ -51,7 +51,7 @@ class ItemControllerTests {
             post("/api/item")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""{ "name": "hoge" } """)
+                .content("""{ "name": "hoge", "author": "foo", "description": "bar" } """)
         )
             .andExpect(status().isOk)
             .andReturn().response.contentAsString.toLong()
@@ -118,7 +118,7 @@ class ItemControllerTests {
     @WithMockUser(TEST_ID)
     fun cancel() {
         val other = userRepository.save(User("other", "other"))
-        val item = itemRepository.save(Item(user, "item", ItemState.PENDING, other))
+        val item = itemRepository.save(Item(user, "item", "author", "desc", ItemState.PENDING, other))
         val result = mvc.perform(
             post("/api/item/${item.id}/cancel")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -134,7 +134,7 @@ class ItemControllerTests {
     @WithMockUser(TEST_ID)
     fun allow() {
         val other = userRepository.save(User("other", "other"))
-        val item = itemRepository.save(Item(user, "item", ItemState.PENDING, other))
+        val item = itemRepository.save(Item(user, "item", "author", "desc", ItemState.PENDING, other))
         val result = mvc.perform(
             post("/api/item/${item.id}/allow")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())

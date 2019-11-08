@@ -1,13 +1,14 @@
 <template>
   <v-dialog v-model="dialog" max-width="600px">
-    <!--<v-btn slot="activator" color="black" dark flat outlined @click.stop="open"-->
-    <v-btn
-      slot="activator"
-      color="accent"
-      class="d-none d-sm-flex"
-      @click.stop="open"
-      >出品</v-btn
-    >
+    <template v-slot:activator="{ on }">
+      <v-btn
+        color="accent"
+        class="d-none d-sm-flex"
+        @click.stop="open"
+        v-on="on"
+        >出品</v-btn
+      >
+    </template>
 
     <v-card>
       <v-card-title class="headline black white--text">
@@ -54,7 +55,7 @@
             <v-col cols="12">
               説明
               <v-textarea
-                v-model="message"
+                v-model="description"
                 outlined
                 placeholder="本の状態や、受け渡し希望キャンパスなど"
               ></v-textarea>
@@ -76,17 +77,16 @@ import { Component, Vue } from "vue-property-decorator";
 import { postSubmitItem } from "@/api";
 
 @Component({})
-export default class SignInModal extends Vue {
+export default class ExhibitModal extends Vue {
   name = "";
   author = "";
-  message = "";
+  description = "";
   dialog = false;
 
   async exhibit() {
     if (this.name) {
-      await postSubmitItem(this.name);
-      this.$router.push("/");
-      close();
+      await postSubmitItem(this.name, this.author, this.description);
+      this.close();
     }
   }
 

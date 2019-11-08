@@ -12,6 +12,12 @@ data class Item(
     @Column(name = "name", nullable = false)
     var name: String = "",
 
+    @Column(name = "author", nullable = false)
+    var author: String = "",
+
+    @Column(name = "description", nullable = false)
+    var description: String = "",
+
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     var state: ItemState = ItemState.AVAILABLE,

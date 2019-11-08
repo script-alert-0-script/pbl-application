@@ -57,12 +57,13 @@
         <v-col cols="12" md="7">
           <v-card-title class="headline mb-1">{{ item.name }}</v-card-title>
           <!-- TODO: add author to Item -->
-          <v-card-subtitle class="black--text">著者名</v-card-subtitle>
+          <v-card-subtitle class="black--text">{{
+            item.author
+          }}</v-card-subtitle>
           <v-card-text class="black--text">
             <user-info :owner="item.owner"></user-info>
             <div>
-              <!-- {{ item.description }} -->
-              大岡山で受け渡しできます．
+              {{ item.description }}
             </div>
             <!-- TODO: manage chats -->
             <v-divider />

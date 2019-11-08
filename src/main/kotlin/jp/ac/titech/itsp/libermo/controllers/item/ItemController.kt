@@ -21,7 +21,7 @@ class ItemController(
     @ApiOperation("Register an item")
     @PostMapping
     fun register(@RequestBody request: RegisterItemRequest): ResponseEntity<Long> {
-        val item = itemService.create(request.name)
+        val item = itemService.create(request.name, request.author, request.description)
         return ResponseEntity.ok(item.id)
     }
 

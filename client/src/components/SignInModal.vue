@@ -66,7 +66,7 @@ export default class SignInModal extends Vue {
   async signIn() {
     try {
       await auth.signIn(this.email + this.domain, this.password);
-      close();
+      this.close();
     } catch (e) {
       if (e instanceof Error) {
         this.message = e.message;
