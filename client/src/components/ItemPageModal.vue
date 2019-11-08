@@ -1,9 +1,14 @@
 <template>
   <v-card v-if="item" class="mx-auto">
     <v-container>
+      <v-spacer />
+      <v-btn icon style="float: right;" @click.stop="close">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+
       <v-row>
-        <v-spacer />
-        <v-col cols="12" md="4" align="center">
+        <!-- TODO: update when clicked -->
+        <v-col cols="12" md="5" align="center">
           <v-img
             max-width="300"
             max-height="300"
@@ -73,11 +78,6 @@
         </v-col>
 
         <!-- FIXME: スマホだと変なところに行っちゃう -->
-        <v-col cols="1">
-          <v-btn icon>
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-col>
       </v-row>
     </v-container>
   </v-card>
@@ -137,6 +137,10 @@ export default class ItemPageModal extends Vue {
 
   async allow() {
     if (this.item) this.item = await postAllow(this.item.id);
+  }
+
+  close() {
+    this.$router.push("/");
   }
 }
 </script>
