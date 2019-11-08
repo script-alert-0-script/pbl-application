@@ -1,13 +1,14 @@
-<template v-slot:activator="{ on }">
+<template>
   <v-dialog v-model="dialog" max-width="600px">
-    <!--<v-btn slot="activator" color="black" dark flat outlined @click.stop="open">-->
+    <template v-slot:activator="{ on }">
     <v-btn
-      slot="activator"
       color="accent"
       class="d-none d-sm-flex"
       @click.stop="open"
+        v-on="on"
       >出品</v-btn
     >
+    </template>
 
     <v-card>
       <v-card-title class="headline black white--text">
