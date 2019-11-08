@@ -17,10 +17,12 @@ export default class SubmitItem extends Vue {
   name = "";
 
   async submitItem() {
+    /*
     if (this.name) {
       const id = await postSubmitItem(this.name);
       this.$router.push(`/item/${id}`);
     }
+    */
   }
 }
 </script>

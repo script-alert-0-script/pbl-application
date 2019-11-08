@@ -81,7 +81,6 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { getItem, postAllow, postCancel, postRequest } from "@/api";
-import ItemInfo from "@/components/ItemInfo.vue";
 import UserInfo from "@/components/UserInfo.vue";
 import Chat from "@/components/Chat.vue";
 import SendMessage from "@/components/SendMessage.vue";
@@ -90,7 +89,6 @@ import VueRouter from "vue-router";
 
 @Component({
   components: {
-    "item-info": ItemInfo,
     "user-info": UserInfo,
     chat: Chat,
     "send-message": SendMessage
