@@ -91,7 +91,7 @@ import Chat from "@/components/Chat.vue";
 import SendMessage from "@/components/SendMessage.vue";
 import { Item } from "libermo";
 import VueRouter from "vue-router";
-import { users } from "@/store/modules/user";
+import { user } from "@/store/modules/user";
 
 @Component({
   components: {
@@ -109,9 +109,8 @@ export default class ItemPageModal extends Vue {
 
   // TODO: get me
   get isOwner() {
-    const user = users.user;
-    if (user && this.item) {
-      return user.id === this.item.owner.id;
+    if (user.user && this.item) {
+      return user.user.id === this.item.owner.id;
     }
     return false;
   }

@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/analytics";
-import { users } from "@/store/modules/user";
+import { user } from "@/store/modules/user";
 import { getMe } from "@/api";
 
 const options = {
@@ -27,11 +27,11 @@ class Auth {
   constructor() {
     firebase.initializeApp(options);
     firebase.analytics();
-    firebase.auth().onAuthStateChanged(async user => {
-      if (user) {
-        users.setUser(await getMe());
+    firebase.auth().onAuthStateChanged(async firebaseUser => {
+      if (firebaseUser) {
+        user.setUser(await getMe());
       } else {
-        users.setUser(null);
+        user.setUser(null);
       }
     });
   }
@@ -50,15 +50,15 @@ class Auth {
       throw new Error("このメールアドレスは既に使われています");
     }
 
-    const { user } = await firebase
+    const firebaseUser = (await firebase
       .auth()
-      .createUserWithEmailAndPassword(email, password);
-    if (user) user.sendEmailVerification(settings);
+      .createUserWithEmailAndPassword(email, password)).user;
+    if (firebaseUser) firebaseUser.sendEmailVerification(settings);
   }
 
   async signOut() {
     await firebase.auth().signOut();
-    users.setUser(null);
+    user.setUser(null);
   }
 }
 

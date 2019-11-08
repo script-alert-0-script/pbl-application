@@ -12,7 +12,7 @@ export interface UserState {
 }
 
 @Module({ dynamic: true, store, name: "user" })
-class UserModule extends VuexModule implements UserState {
+export class UserModule extends VuexModule implements UserState {
   user: User | null = null;
 
   @Mutation
@@ -21,8 +21,8 @@ class UserModule extends VuexModule implements UserState {
   }
 
   get isAuthenticated() {
-    return !!this.user;
+    return this.user != null;
   }
 }
 
-export const users = getModule(UserModule);
+export const user = getModule(UserModule);

@@ -45,7 +45,7 @@ import { debounce } from "lodash";
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { Item } from "libermo";
 import auth from "@/auth";
-import { users } from "@/store/modules/user";
+import { user } from "@/store/modules/user";
 import ItemCard from "@/components/home/ItemCard.vue";
 import ExhibitModal from "@/components/ExhibitModal.vue";
 
@@ -69,7 +69,7 @@ export default class Home extends Vue {
   }
 
   get isAuthenticated() {
-    return users.isAuthenticated;
+    return user.isAuthenticated;
   }
 
   @Watch("param")
