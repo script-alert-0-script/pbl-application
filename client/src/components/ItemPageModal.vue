@@ -10,10 +10,11 @@
         <!-- TODO: update when clicked -->
         <v-col cols="12" md="5" align="center">
           <v-img
-            max-width="200"
-            max-height="200"
-            src="@/assets/mokun.png"
-          ></v-img>
+            max-width="300"
+            max-height="300"
+            src="@/assets/no-image.png"
+            class="mb-6"
+          />
           <!--buttons-->
           <!--available-->
           <v-btn
@@ -22,11 +23,12 @@
             dark
             rounded
             @click.prevent="request"
-            >取引希望！</v-btn
           >
-          <v-btn v-if="item.state == 'AVAILABLE' && isOwner" rounded disabled
-            >出品中</v-btn
-          >
+            取引希望！
+          </v-btn>
+          <v-btn v-if="item.state == 'AVAILABLE' && isOwner" rounded disabled>
+            出品中
+          </v-btn>
           <!--pending-->
           <v-btn
             v-if="item.state == 'PENDING'"
@@ -34,20 +36,22 @@
             dark
             rounded
             @click.prevent="cancel"
-            >取引キャンセル</v-btn
           >
+            取引キャンセル
+          </v-btn>
           <v-btn
             v-if="item.state == 'PENDING' && isOwner"
             color="pink lighten-4"
             dark
             rounded
             @click.prevent="allow"
-            >取引承認！</v-btn
           >
+            取引承認！
+          </v-btn>
           <!--completed-->
-          <v-btn v-if="item.state == 'COMPLETED'" rounded disabled
-            >取引済み</v-btn
-          >
+          <v-btn v-if="item.state == 'COMPLETED'" rounded disabled>
+            取引済み
+          </v-btn>
         </v-col>
 
         <v-col cols="12" md="7">
@@ -82,16 +86,15 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { getItem, postAllow, postCancel, postRequest } from "@/api";
-import ItemInfo from "@/components/ItemInfo.vue";
 import UserInfo from "@/components/UserInfo.vue";
 import Chat from "@/components/Chat.vue";
 import SendMessage from "@/components/SendMessage.vue";
 import { Item } from "libermo";
 import VueRouter from "vue-router";
+import { user } from "@/store/modules/user";
 
 @Component({
   components: {
-    "item-info": ItemInfo,
     "user-info": UserInfo,
     chat: Chat,
     "send-message": SendMessage
@@ -103,8 +106,14 @@ export default class ItemPageModal extends Vue {
     { name: "name2", message: "mes2" }
   ];
   item: Item | null = null;
+
   // TODO: get me
-  readonly isOwner: Boolean = false;
+  get isOwner() {
+    if (user.user && this.item) {
+      return user.user.id === this.item.owner.id;
+    }
+    return false;
+  }
 
   async created() {
     this.item = await getItem(parseInt(this.$route.params.id));
@@ -117,16 +126,16 @@ export default class ItemPageModal extends Vue {
     });
   }
 
-  request() {
-    if (this.item) postRequest(this.item.id);
+  async request() {
+    if (this.item) this.item = await postRequest(this.item.id);
   }
 
-  cancel() {
-    if (this.item) postCancel(this.item.id);
+  async cancel() {
+    if (this.item) this.item = await postCancel(this.item.id);
   }
 
-  allow() {
-    if (this.item) postAllow(this.item.id);
+  async allow() {
+    if (this.item) this.item = await postAllow(this.item.id);
   }
 
   close() {
