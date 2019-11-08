@@ -1,9 +1,5 @@
 <template>
   <v-dialog v-model="dialog" max-width="600px">
-    <v-btn slot="activator" color="black" dark flat outlined @click.stop="open"
-      >ユーザ登録</v-btn
-    >
-
     <v-card>
       <v-card-title class="headline black white--text">
         libermoへようこそ！
@@ -65,19 +61,17 @@ export default class SignUpModal extends Vue {
   email = "";
   password = "";
   message = "";
-  dialog = false;
+  dialog = true;
 
-  signUp() {
-    auth
-      .signUp(this.email + this.domain, this.password)
-      .then(() => {
-        this.message = "登録メールが送信されました。メールを確認してください";
-      })
-      .catch(e => {
-        if (e instanceof Error) {
-          this.message = e.message;
-        }
-      });
+  async signUp() {
+    try {
+      await auth.signUp(this.email + this.domain, this.password);
+      this.message = "登録メールが送信されました。メールを確認してください";
+    } catch (e) {
+      if (e instanceof Error) {
+        this.message = e.message;
+      }
+    }
   }
 
   open() {

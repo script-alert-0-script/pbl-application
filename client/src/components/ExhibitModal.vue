@@ -82,12 +82,11 @@ export default class SignInModal extends Vue {
   message = "";
   dialog = false;
 
-  exhibit() {
+  async exhibit() {
     if (this.name) {
-      postSubmitItem(this.name).then(async () => {
-        this.$router.push("/");
-        close();
-      });
+      await postSubmitItem(this.name);
+      this.$router.push("/");
+      close();
     }
   }
 
