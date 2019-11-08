@@ -50,8 +50,8 @@ class ItemControllerTests {
         val id = mvc.perform(
             post("/api/item")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .content("name=hoge")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""{ "name": "hoge" } """)
         )
             .andExpect(status().isOk)
             .andReturn().response.contentAsString.toLong()
