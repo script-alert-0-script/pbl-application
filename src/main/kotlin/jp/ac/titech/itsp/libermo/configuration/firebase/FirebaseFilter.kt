@@ -36,6 +36,10 @@ class FirebaseFilter(
             return null
         }
 
+        if (!token.isEmailVerified) {
+            return null
+        }
+
         return if (!userService.exists(token.uid)) userService.create(token.uid, token.email)
         else userService.get(token.uid)
     }
