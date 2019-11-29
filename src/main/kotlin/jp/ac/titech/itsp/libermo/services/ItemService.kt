@@ -38,7 +38,7 @@ class ItemService(
         return itemRepository.save(item)
     }
 
-    fun cancel(id: Long): Item {
+    fun refuse(id: Long): Item {
         val item = get(id)
         val user = userService.me()
         if (item.buyer?.id != user.id && item.owner.id != user.id) throw ForbiddenException("You are not owner or buyer.")
