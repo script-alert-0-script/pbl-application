@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="600px">
+  <v-dialog v-model="dialog" @click:outside="close" max-width="600px">
     <v-card>
       <v-card-title class="headline black white--text">
         libermoにログイン
@@ -80,6 +80,7 @@ export default class SignInModal extends Vue {
 
   close() {
     this.dialog = false;
+    this.$router.back();
   }
 }
 </script>
