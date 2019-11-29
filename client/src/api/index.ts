@@ -45,12 +45,16 @@ export async function postRequest(id: number) {
   return (await http.post<Item>(`/api/item/${id}/request`)).data;
 }
 
-export async function postCancel(id: number) {
-  return (await http.post<Item>(`/api/item/${id}/cancel`)).data;
+export async function postRefuse(id: number) {
+  return (await http.post<Item>(`/api/item/${id}/refuse`)).data;
 }
 
 export async function postAllow(id: number) {
   return (await http.post<Item>(`/api/item/${id}/allow`)).data;
+}
+
+export async function postCancel(id: number) {
+  return (await http.post<Item>(`/api/item/${id}/cancel`)).data;
 }
 
 export async function postSubmitItem(

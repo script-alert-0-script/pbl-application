@@ -38,7 +38,7 @@ class ItemService(
         return itemRepository.save(item)
     }
 
-    fun cancel(id: Long): Item {
+    fun refuse(id: Long): Item {
         val item = get(id)
         val user = userService.me()
         if (item.buyer?.id != user.id && item.owner.id != user.id) throw ForbiddenException("You are not owner or buyer.")
@@ -55,6 +55,13 @@ class ItemService(
         if (item.state != ItemState.PENDING) throw IllegalStateException("Item state is not ${ItemState.PENDING}")
         item.state = ItemState.COMPLETED
         return itemRepository.save(item)
+    }
+
+    fun cancel(id: Long) {
+        val item = get(id)
+        val owner = userService.me()
+        if (item.owner.id != owner.id) throw ForbiddenException("You are not owner.")
+        itemRepository.deleteById(id)
     }
 
 }

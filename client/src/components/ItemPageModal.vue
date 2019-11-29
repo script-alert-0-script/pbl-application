@@ -7,7 +7,6 @@
       </v-btn>
 
       <v-row>
-        <!-- TODO: update when clicked -->
         <v-col cols="12" md="5" align="center">
           <v-img
             max-width="300"
@@ -40,7 +39,7 @@
             color="blue-grey"
             dark
             rounded
-            @click.prevent="cancel"
+            @click.prevent="refuse"
             >取引キャンセル</v-btn
           >
           <v-btn v-if="item.state == 'PENDING' && !isTrader" rounded disabled
@@ -70,6 +69,10 @@
           <v-card-text class="black--text">
             <user-info :owner="item.owner"></user-info>
             <div>{{ item.description }}</div>
+
+            <div v-if="isOwner" class="my-5">
+              <confirm :item = "this.item" />
+            </div>
             <!-- TODO: manage chats -->
             <v-divider />
 
@@ -82,8 +85,6 @@
             <send-message @send-message="pushLog"></send-message>
           </v-card-text>
         </v-col>
-
-        <!-- FIXME: スマホだと変なところに行っちゃう -->
       </v-row>
     </v-container>
   </v-card>
@@ -91,19 +92,21 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { getItem, postAllow, postCancel, postRequest } from "@/api";
+import { getItem, postAllow, postRefuse, postRequest } from "@/api";
 import UserInfo from "@/components/UserInfo.vue";
 import Chat from "@/components/Chat.vue";
 import SendMessage from "@/components/SendMessage.vue";
 import { Item } from "libermo";
 import VueRouter from "vue-router";
 import { user } from "@/store/modules/user";
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 @Component({
   components: {
     "user-info": UserInfo,
     chat: Chat,
-    "send-message": SendMessage
+    "send-message": SendMessage,
+    "confirm": ConfirmModal
   }
 })
 export default class ItemPageModal extends Vue {
@@ -155,8 +158,8 @@ export default class ItemPageModal extends Vue {
     if (this.item) this.item = await postRequest(this.item.id);
   }
 
-  async cancel() {
-    if (this.item) this.item = await postCancel(this.item.id);
+  async refuse() {
+    if (this.item) this.item = await postRefuse(this.item.id);
   }
 
   async allow() {
