@@ -18,5 +18,7 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
+    - name: copy id_rsa.pub
         echo ${{secrets.ID_RSA_PUB}} > ~/.ssh/id_rsa.pub
-        cat .ssh/id_rsa.pub
+    - name: check id_rsa.pub
+        cat ~/.ssh/id_rsa.pub
