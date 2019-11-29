@@ -39,7 +39,7 @@
             color="blue-grey"
             dark
             rounded
-            @click.prevent="cancel"
+            @click.prevent="refuse"
             >取引キャンセル</v-btn
           >
           <v-btn v-if="item.state == 'PENDING' && !isTrader" rounded disabled
@@ -94,7 +94,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { getItem, postAllow, postCancel, postRequest } from "@/api";
+import { getItem, postAllow, postRefuse, postRequest } from "@/api";
 import UserInfo from "@/components/UserInfo.vue";
 import Chat from "@/components/Chat.vue";
 import SendMessage from "@/components/SendMessage.vue";
@@ -158,8 +158,8 @@ export default class ItemPageModal extends Vue {
     if (this.item) this.item = await postRequest(this.item.id);
   }
 
-  async cancel() {
-    if (this.item) this.item = await postCancel(this.item.id);
+  async refuse() {
+    if (this.item) this.item = await postRefuse(this.item.id);
   }
 
   async allow() {
