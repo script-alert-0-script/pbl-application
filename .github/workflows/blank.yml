@@ -19,9 +19,6 @@ jobs:
         echo Add other actions to build,
         echo test, and deploy your project.
     - name: copy id_rsa
-      run: |
-        echo "${{secrets.ID_RSA}}" > id_rsa
+      run: echo "${{secrets.ID_RSA}}" > id_rsa
     - name: remote exec
-      run: |
-        ssh-keygen -R ${{secrets.SERVER_IP}}
-        ssh -i id_rsa ${{secrets.USER}}@${{secrets.SERVER_IP}} "echo test > test"
+      run: ssh -i id_rsa ${{secrets.USER}}@${{secrets.SERVER_IP}} "echo test > test"
