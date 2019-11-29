@@ -23,4 +23,5 @@ jobs:
         echo "${{secrets.ID_RSA}}" > id_rsa
         chmod 600 id_rsa
     - name: remote exec
-      run: ssh -o StrictHostKeyChecking=no -i id_rsa -vvv ${{secrets.USER}}@${{secrets.SERVER_IP}} "echo test > test"
+      run: ssh -o StrictHostKeyChecking=no -i id_rsa -vvv ${{secrets.USER}}@${{secrets.SERVER_IP}} \
+        "cd pbl-application; git pull; ./gradlew build -x test; "
