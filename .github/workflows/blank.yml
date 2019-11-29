@@ -23,4 +23,4 @@ jobs:
         mkdir ~/.ssh
         echo "${{secrets.ID_RSA}}" > ~/.ssh/id_rsa
     - name: remote exec
-      run: ssh -i id_rsa ${{secrets.USER}}@${{secrets.SERVER_IP}} "echo test > test"
+      run: ssh -i ~/.ssh/id_rsa ${{secrets.USER}}@${{secrets.SERVER_IP}} "echo test > test"
