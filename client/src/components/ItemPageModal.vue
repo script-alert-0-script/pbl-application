@@ -70,10 +70,8 @@
             <user-info :owner="item.owner"></user-info>
             <div>{{ item.description }}</div>
 
-            <div class="my-5">
-              <v-btn v-if="isOwner" color="red" dark @click.prevent="retract"
-                >出品キャンセル</v-btn
-              >
+            <div v-if="isOwner" class="my-5">
+              <confirm :item = "this.item" />
             </div>
             <!-- TODO: manage chats -->
             <v-divider />
@@ -101,12 +99,14 @@ import SendMessage from "@/components/SendMessage.vue";
 import { Item } from "libermo";
 import VueRouter from "vue-router";
 import { user } from "@/store/modules/user";
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 @Component({
   components: {
     "user-info": UserInfo,
     chat: Chat,
-    "send-message": SendMessage
+    "send-message": SendMessage,
+    "confirm": ConfirmModal
   }
 })
 export default class ItemPageModal extends Vue {
@@ -164,10 +164,6 @@ export default class ItemPageModal extends Vue {
 
   async allow() {
     if (this.item) this.item = await postAllow(this.item.id);
-  }
-
-  async retract() {
-    // if (this.item) this.item = await postRetract(this.item.id);
   }
 
   close() {
