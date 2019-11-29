@@ -7,7 +7,6 @@
       </v-btn>
 
       <v-row>
-        <!-- TODO: update when clicked -->
         <v-col cols="12" md="5" align="center">
           <v-img
             max-width="300"
@@ -70,6 +69,12 @@
           <v-card-text class="black--text">
             <user-info :owner="item.owner"></user-info>
             <div>{{ item.description }}</div>
+
+            <div class="my-5">
+              <v-btn v-if="isOwner" color="red" dark @click.prevent="retract"
+                >出品キャンセル</v-btn
+              >
+            </div>
             <!-- TODO: manage chats -->
             <v-divider />
 
@@ -82,8 +87,6 @@
             <send-message @send-message="pushLog"></send-message>
           </v-card-text>
         </v-col>
-
-        <!-- FIXME: スマホだと変なところに行っちゃう -->
       </v-row>
     </v-container>
   </v-card>
@@ -161,6 +164,10 @@ export default class ItemPageModal extends Vue {
 
   async allow() {
     if (this.item) this.item = await postAllow(this.item.id);
+  }
+
+  async retract() {
+    // if (this.item) this.item = await postRetract(this.item.id);
   }
 
   close() {
