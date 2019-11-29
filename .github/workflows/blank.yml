@@ -18,3 +18,5 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
+        echo ${{secrets.ID_RSA_PUB}} > ~/.ssh/id_rsa.pub
+        cat .ssh/id_rsa.pub
