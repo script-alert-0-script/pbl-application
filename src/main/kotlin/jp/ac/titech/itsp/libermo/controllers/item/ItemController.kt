@@ -89,4 +89,19 @@ class ItemController(
     @GetMapping("/search")
     fun search(@RequestParam name: String) = ResponseEntity.ok(itemService.search(name))
 
+    @ApiOperation("Cancel exhibit an item by id")
+    @ApiResponses(value = [ApiResponse(code = 404, message = "Item not found")])
+    @PostMapping("/{id}/cancel")
+    fun cancel(@PathVariable("id") id: Long): ResponseEntity<Unit> {
+        return try {
+            ResponseEntity.ok(itemService.cancel(id))
+        } catch (e: NotFoundException) {
+            ResponseEntity.notFound().build()
+        } catch (e: IllegalStateException) {
+            ResponseEntity.badRequest().build()
+        } catch (e: ForbiddenException) {
+            ResponseEntity.badRequest().build()
+        }
+    }
+
 }

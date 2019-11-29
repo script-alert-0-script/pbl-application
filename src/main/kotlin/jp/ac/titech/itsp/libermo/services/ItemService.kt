@@ -57,4 +57,11 @@ class ItemService(
         return itemRepository.save(item)
     }
 
+    fun cancel(id: Long) {
+        val item = get(id)
+        val owner = userService.me()
+        if (item.owner.id != owner.id) throw ForbiddenException("You are not owner.")
+        itemRepository.deleteById(id)
+    }
+
 }
