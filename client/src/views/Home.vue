@@ -21,10 +21,16 @@
         hide-details
         v-model="param"
       />
-      <v-spacer class="d-none d-sm-flex" />
-      <v-btn v-if="!isAuthenticated" to="/signin" class="d-none d-sm-flex">
-        ログイン
-      </v-btn>
+      <v-spacer />
+      <template v-if="!isAuthenticated">
+        <v-btn to="/signin" class="d-none d-sm-flex">
+          <v-icon left>mdi-exit-to-app</v-icon>
+          ログイン
+        </v-btn>
+        <v-btn to="/signin" text icon class="d-flex d-sm-none">
+          <v-icon>mdi-exit-to-app</v-icon>
+        </v-btn>
+      </template>
       <exhibit-modal v-else />
     </v-app-bar>
     <v-content>
