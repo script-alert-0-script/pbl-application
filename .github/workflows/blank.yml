@@ -18,11 +18,9 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
-    - name: copy id_rsa.pub
+    - name: copy id_rsa
       run: |
         mkdir ~/.ssh
-        echo ${{secrets.ID_RSA_PUB}} > ~/.ssh/id_rsa.pub
-    - name: check id_rsa.pub
-      run: cat ~/.ssh/id_rsa.pub
+        echo ${{secrets.ID_RSA}} > ~/.ssh/id_rsa
     - name: remote exec
       run: ssh -i id_rsa ${{secrets.USER}}@${{secrets.SERVER_IP}} "echo test > test"
