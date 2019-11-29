@@ -21,6 +21,6 @@ jobs:
     - name: copy id_rsa
       run: |
         mkdir ~/.ssh
-        echo ${{secrets.ID_RSA}} > ~/.ssh/id_rsa
+        echo "${{secrets.ID_RSA}}" > ~/.ssh/id_rsa
     - name: remote exec
       run: ssh -i id_rsa ${{secrets.USER}}@${{secrets.SERVER_IP}} "echo test > test"
