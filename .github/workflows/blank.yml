@@ -21,4 +21,4 @@ jobs:
     - name: copy id_rsa
       run: echo "${{secrets.ID_RSA}}" > id_rsa
     - name: remote exec
-      run: ssh -i id_rsa ${{secrets.USER}}@${{secrets.SERVER_IP}} "echo test > test"
+      run: ssh -i id_rsa -vvv ${{secrets.USER}}@${{secrets.SERVER_IP}} "echo test > test"
