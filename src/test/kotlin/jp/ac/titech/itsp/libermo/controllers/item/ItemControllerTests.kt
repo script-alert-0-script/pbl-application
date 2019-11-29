@@ -116,11 +116,11 @@ class ItemControllerTests {
 
     @Test
     @WithMockUser(TEST_ID)
-    fun cancel() {
+    fun refuse() {
         val other = userRepository.save(User("other", "other"))
         val item = itemRepository.save(Item(user, "item", "author", "desc", ItemState.PENDING, other))
         val result = mvc.perform(
-            post("/api/item/${item.id}/cancel")
+            post("/api/item/${item.id}/refuse")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
         )
             .andExpect(status().isOk)
@@ -143,6 +143,18 @@ class ItemControllerTests {
             .andReturn()
         val actual: Item = jacksonObjectMapper().readValue(result.response.contentAsString)
         assertEquals(ItemState.COMPLETED, actual.state)
+    }
+
+    @Test
+    @WithMockUser(TEST_ID)
+    fun cancel() {
+        val item = itemRepository.save(Item(user, "item", "author", "desc"))
+        mvc.perform(
+            post("/api/item/${item.id}/cancel")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+        )
+            .andExpect(status().isOk)
+        assertFalse(itemRepository.existsById(item.id))
     }
 
     companion object {
