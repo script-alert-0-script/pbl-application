@@ -11,6 +11,7 @@ import jp.ac.titech.itsp.libermo.models.Item
 import jp.ac.titech.itsp.libermo.services.ItemService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/api/item")
@@ -20,8 +21,14 @@ class ItemController(
 
     @ApiOperation("Register an item")
     @PostMapping
-    fun register(@RequestBody request: RegisterItemRequest): ResponseEntity<Long> {
-        val item = itemService.create(request.name, request.author, request.description)
+    fun register(
+        name: String,
+        author: String,
+        description: String,
+        image: MultipartFile? = null
+    ): ResponseEntity<Long> {
+        if (image != null && !(image.contentType ?: "").matches(Regex("image/.*"))) return ResponseEntity.badRequest().build()
+        val item = itemService.create(name, author, description)
         return ResponseEntity.ok(item.id)
     }
 
