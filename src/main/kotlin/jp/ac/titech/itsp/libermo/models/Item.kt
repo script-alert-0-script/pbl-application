@@ -18,6 +18,10 @@ data class Item(
     @Column(name = "description", nullable = false)
     var description: String = "",
 
+    @OneToOne(cascade = [CascadeType.REMOVE])
+    @JoinColumn(name = "image")
+    var image: Image? = null,
+
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     var state: ItemState = ItemState.AVAILABLE,

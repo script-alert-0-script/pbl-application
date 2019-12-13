@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import javassist.NotFoundException
-import jp.ac.titech.itsp.libermo.controllers.item.request.RegisterItemRequest
 import jp.ac.titech.itsp.libermo.exceptions.ForbiddenException
 import jp.ac.titech.itsp.libermo.exceptions.IllegalStateException
 import jp.ac.titech.itsp.libermo.models.Item
@@ -28,7 +27,7 @@ class ItemController(
         image: MultipartFile? = null
     ): ResponseEntity<Long> {
         if (image != null && !(image.contentType ?: "").matches(Regex("image/.*"))) return ResponseEntity.badRequest().build()
-        val item = itemService.create(name, author, description)
+        val item = itemService.create(name, author, description, image)
         return ResponseEntity.ok(item.id)
     }
 

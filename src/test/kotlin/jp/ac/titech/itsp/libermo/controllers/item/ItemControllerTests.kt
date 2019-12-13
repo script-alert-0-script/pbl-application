@@ -123,7 +123,7 @@ class ItemControllerTests {
     @WithMockUser(TEST_ID)
     fun refuse() {
         val other = userRepository.save(User("other", "other"))
-        val item = itemRepository.save(Item(user, "item", "author", "desc", ItemState.PENDING, other))
+        val item = itemRepository.save(Item(user, "item", "author", "desc", null, ItemState.PENDING, other))
         val result = mvc.perform(
             post("/api/item/${item.id}/refuse")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -139,7 +139,7 @@ class ItemControllerTests {
     @WithMockUser(TEST_ID)
     fun allow() {
         val other = userRepository.save(User("other", "other"))
-        val item = itemRepository.save(Item(user, "item", "author", "desc", ItemState.PENDING, other))
+        val item = itemRepository.save(Item(user, "item", "author", "desc", null, ItemState.PENDING, other))
         val result = mvc.perform(
             post("/api/item/${item.id}/allow")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
