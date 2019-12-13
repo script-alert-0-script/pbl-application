@@ -11,7 +11,7 @@
           <v-img
             max-width="300"
             max-height="300"
-            src="@/assets/no-image.png"
+            :src="item.imageURI"
             class="mb-6"
           />
           <!--buttons-->
