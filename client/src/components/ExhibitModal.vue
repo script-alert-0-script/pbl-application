@@ -33,7 +33,6 @@
             </v-col>
             <v-col cols="4">
               <v-file-input
-                v-on:change="getFileContent"
                 class="ml-6 mt-5"
                 accept="image/png, image/jpeg, image/bmp"
                 prepend-icon="mdi-camera"
@@ -99,7 +98,7 @@ export default class ExhibitModal extends Vue {
   close() {
     this.dialog = false;
   }
-
+/*
   async getFileContent(file: File) {
     try {
       this.image = file;
@@ -118,5 +117,6 @@ export default class ExhibitModal extends Vue {
       reader.readAsArrayBuffer(file);
     })
   }
+  */
 }
 </script>
