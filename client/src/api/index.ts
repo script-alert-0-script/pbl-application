@@ -65,14 +65,13 @@ export async function postSubmitItem(
 ) {
   const params = new FormData();
   //TODO: impl map or for loop
-  params.append('name', name);
-  params.append('author', author);
-  params.append('description', description);
-  if(image != null) params.append('image', image);
+  params.append("name", name);
+  params.append("author", author);
+  params.append("description", description);
+  if (image != null) params.append("image", image);
   return (await http.post<number>(`/api/item/`, params, {
     headers: {
-      'content-type': 'multipart/form-data',
-    },
-  }))
-    .data;
+      "content-type": "multipart/form-data"
+    }
+  })).data;
 }

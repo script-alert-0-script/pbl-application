@@ -86,7 +86,12 @@ export default class ExhibitModal extends Vue {
 
   async exhibit() {
     if (this.name) {
-      await postSubmitItem(this.name, this.author, this.description, this.image);
+      await postSubmitItem(
+        this.name,
+        this.author,
+        this.description,
+        this.image
+      );
       this.close();
     }
   }
@@ -98,25 +103,9 @@ export default class ExhibitModal extends Vue {
   close() {
     this.dialog = false;
   }
-/*
-  async getFileContent(file: File) {
-    try {
-      this.image = file;
-      const content = await this.readFileAsync(file);
-      console.log(new Uint8Array(content.slice(0, 3)));
-    } catch (e) {
-      console.log(e)
-    }
-  }
 
-  readFileAsync(file: File) :Promise<ArrayBuffer> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => (reader.result instanceof ArrayBuffer)?resolve(reader.result) : reject('not ArrayBuffer');
-      reader.onerror = reject;
-      reader.readAsArrayBuffer(file);
-    })
+  async getFileContent(file: File) {
+    this.image = file;
   }
-  */
 }
 </script>
