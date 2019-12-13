@@ -33,6 +33,7 @@
             </v-col>
             <v-col cols="4">
               <v-file-input
+                @change="getFileContent"
                 class="ml-6 mt-5"
                 accept="image/png, image/jpeg, image/bmp"
                 prepend-icon="mdi-camera"
