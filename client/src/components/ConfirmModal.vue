@@ -1,11 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="480">
     <template v-slot:activator="{ on }">
-      <v-btn
-        color="red"
-        dark
-        @click.stop="open"
-        v-on="on"
+      <v-btn color="red" dark @click.stop="open" v-on="on"
         >出品キャンセル</v-btn
       >
     </template>
@@ -32,16 +28,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
-import { postCancel } from '@/api'
-import { Item } from 'libermo'
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { postCancel } from "@/api";
+import { Item } from "libermo";
 
 @Component({})
 export default class ConfirmModal extends Vue {
   @Prop({ required: true })
-  private item!: Item
+  private item!: Item;
 
-  dialog = false
+  dialog = false;
   message = "";
 
   open() {

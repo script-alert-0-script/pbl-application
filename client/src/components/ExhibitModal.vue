@@ -86,7 +86,12 @@ export default class ExhibitModal extends Vue {
 
   async exhibit() {
     if (this.name) {
-      await postSubmitItem(this.name, this.author, this.description, this.image);
+      await postSubmitItem(
+        this.name,
+        this.author,
+        this.description,
+        this.image
+      );
       this.close();
     }
   }
@@ -102,6 +107,5 @@ export default class ExhibitModal extends Vue {
   async getFileContent(file: File) {
     this.image = file;
   }
-
 }
 </script>

@@ -71,7 +71,7 @@
             <div>{{ item.description }}</div>
 
             <div v-if="isOwner" class="my-5">
-              <confirm :item = "this.item" />
+              <confirm :item="this.item" />
             </div>
             <!-- TODO: manage chats -->
             <v-divider />
@@ -106,7 +106,7 @@ import ConfirmModal from "@/components/ConfirmModal.vue";
     "user-info": UserInfo,
     chat: Chat,
     "send-message": SendMessage,
-    "confirm": ConfirmModal
+    confirm: ConfirmModal
   }
 })
 export default class ItemPageModal extends Vue {
