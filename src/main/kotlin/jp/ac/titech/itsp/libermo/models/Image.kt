@@ -10,6 +10,9 @@ data class Image(
     @Column(name = "name", nullable = false)
     val name: String = "",
 
+    @Column(name = "content_type", nullable = false)
+    val contentType: String = "",
+
     @Id
     @Column(name = "id", nullable = false)
     val id: String = UUID.randomUUID().toString()

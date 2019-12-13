@@ -2,6 +2,7 @@ package jp.ac.titech.itsp.libermo.controllers.item
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import jp.ac.titech.itsp.libermo.models.Image
 import jp.ac.titech.itsp.libermo.models.Item
 import jp.ac.titech.itsp.libermo.models.ItemState
 import jp.ac.titech.itsp.libermo.models.User
@@ -61,7 +62,12 @@ class ItemControllerTests {
             .andExpect(status().isOk)
             .andReturn().response.contentAsString.toLong()
         assertTrue(itemRepository.existsById(id))
-        assertEquals("hoge", itemRepository.getOne(id).name)
+        val item = itemRepository.getOne(id)
+        assertEquals("hoge", item.name)
+        assertEquals("dummy.png", item.image?.name)
+
+        val result = mvc.perform(get(item.imageURI)).andReturn()
+        assertEquals("image/png", result.response.getHeader("Content-Type"))
     }
 
     @Test
