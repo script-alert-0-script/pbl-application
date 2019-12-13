@@ -60,8 +60,19 @@ export async function postCancel(id: number) {
 export async function postSubmitItem(
   name: string,
   author: string,
-  description: string
+  description: string,
+  image: File | null
 ) {
-  return (await http.post<number>(`/api/item/`, { name, author, description }))
+  const params = new FormData();
+  //TODO: impl map or for loop
+  params.append('name', name);
+  params.append('author', author);
+  params.append('description', description);
+  if(image != null) params.append('image', image);
+  return (await http.post<number>(`/api/item/`, params, {
+    headers: {
+      'content-type': 'multipart/form-data',
+    },
+  }))
     .data;
 }

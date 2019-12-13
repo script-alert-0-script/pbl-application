@@ -2,6 +2,7 @@ package jp.ac.titech.itsp.libermo.controllers.item
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import jp.ac.titech.itsp.libermo.models.Image
 import jp.ac.titech.itsp.libermo.models.Item
 import jp.ac.titech.itsp.libermo.models.ItemState
 import jp.ac.titech.itsp.libermo.models.User
@@ -14,14 +15,15 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
+import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ExtendWith(SpringExtension::class)
@@ -47,16 +49,25 @@ class ItemControllerTests {
     @Test
     @WithMockUser(TEST_ID)
     fun registerItem() {
+        val image = MockMultipartFile("image", "dummy.png", "image/png", ClassPathResource("dummy.png").inputStream)
         val id = mvc.perform(
-            post("/api/item")
+            multipart("/api/item")
+                .file(image)
+                .param("name", "hoge")
+                .param("author", "foo")
+                .param("description", "bar")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""{ "name": "hoge", "author": "foo", "description": "bar" } """)
         )
             .andExpect(status().isOk)
             .andReturn().response.contentAsString.toLong()
         assertTrue(itemRepository.existsById(id))
-        assertEquals("hoge", itemRepository.getOne(id).name)
+        val item = itemRepository.getOne(id)
+        assertEquals("hoge", item.name)
+        assertEquals("dummy.png", item.image?.name)
+
+        val result = mvc.perform(get(item.imageURI)).andReturn()
+        assertEquals("image/png", result.response.getHeader("Content-Type"))
     }
 
     @Test
@@ -118,7 +129,7 @@ class ItemControllerTests {
     @WithMockUser(TEST_ID)
     fun refuse() {
         val other = userRepository.save(User("other", "other"))
-        val item = itemRepository.save(Item(user, "item", "author", "desc", ItemState.PENDING, other))
+        val item = itemRepository.save(Item(user, "item", "author", "desc", null, ItemState.PENDING, other))
         val result = mvc.perform(
             post("/api/item/${item.id}/refuse")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -134,7 +145,7 @@ class ItemControllerTests {
     @WithMockUser(TEST_ID)
     fun allow() {
         val other = userRepository.save(User("other", "other"))
-        val item = itemRepository.save(Item(user, "item", "author", "desc", ItemState.PENDING, other))
+        val item = itemRepository.save(Item(user, "item", "author", "desc", null, ItemState.PENDING, other))
         val result = mvc.perform(
             post("/api/item/${item.id}/allow")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())

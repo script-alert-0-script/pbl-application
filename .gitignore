@@ -1,4 +1,5 @@
-src/main/resources/credentials.json
+/images/
+/src/main/resources/credentials.json
 HELP.md
 .gradle
 /build/

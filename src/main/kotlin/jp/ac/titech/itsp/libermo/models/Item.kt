@@ -1,5 +1,6 @@
 package jp.ac.titech.itsp.libermo.models
 
+import org.codehaus.jackson.annotate.JsonIgnore
 import javax.persistence.*
 
 @Entity
@@ -18,6 +19,11 @@ data class Item(
     @Column(name = "description", nullable = false)
     var description: String = "",
 
+    @JsonIgnore
+    @OneToOne(cascade = [CascadeType.REMOVE])
+    @JoinColumn(name = "image")
+    val image: Image? = null,
+
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     var state: ItemState = ItemState.AVAILABLE,
@@ -30,4 +36,8 @@ data class Item(
     @GeneratedValue
     @Column(name = "id", nullable = false)
     val id: Long = 0L
-)
+) {
+    var imageURI
+        get() = if (image != null) "/api/image/${image.id}" else "/assets/no-image.png"
+        set(_) {}
+}

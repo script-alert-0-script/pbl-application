@@ -7,15 +7,21 @@ import jp.ac.titech.itsp.libermo.models.Item
 import jp.ac.titech.itsp.libermo.models.ItemState
 import jp.ac.titech.itsp.libermo.repositories.ItemRepository
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 class ItemService(
     private val itemRepository: ItemRepository,
-    private val userService: UserService
+    private val userService: UserService,
+    private val imageService: ImageService
 ) {
 
-    fun create(name: String, author: String, description: String)
-            = itemRepository.save(Item(userService.me(), name, author, description))
+    fun create(name: String, author: String, description: String, image: MultipartFile?): Item {
+        if (image != null) {
+            return itemRepository.save(Item(userService.me(), name, author, description, imageService.create(image)))
+        }
+        return itemRepository.save(Item(userService.me(), name, author, description))
+    }
 
     fun get(id: Long): Item {
         val item = itemRepository.findById(id)

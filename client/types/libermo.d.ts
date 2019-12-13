@@ -7,6 +7,7 @@ declare module "libermo" {
     state: "AVAILABLE" | "PENDING" | "COMPLETED";
     buyer?: User;
     id: number;
+    imageURI: string;
   }
 
   interface User {
