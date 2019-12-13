@@ -5,7 +5,10 @@ import jp.ac.titech.itsp.libermo.models.Image
 import jp.ac.titech.itsp.libermo.repositories.ImageRepository
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileOutputStream
+
 
 @Service
 class ImageService(
@@ -24,8 +27,12 @@ class ImageService(
         val file = File(imageFolder, id)
         if (!file.exists()) File(imageFolder).mkdir()
         try {
-            image.transferTo(file)
+            BufferedOutputStream(FileOutputStream(file)).run {
+                write(image.bytes)
+                close()
+            }
         } catch (e: Exception) {
+            // TODO
             println(e)
         }
     }
